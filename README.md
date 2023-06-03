@@ -35,11 +35,15 @@ Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！
 
 #### 下载方式
 
-![](https://raw.githubusercontent.com/Nagi-ovo/myIMG/main/%E4%B8%8B%E8%BD%BD%E9%A1%B9%E7%9B%AE%E6%8C%87%E5%8D%97.jpg) 1.点击蓝色的 Code 部分；
+![](https://raw.githubusercontent.com/Nagi-ovo/myIMG/main/%E4%B8%8B%E8%BD%BD%E9%A1%B9%E7%9B%AE%E6%8C%87%E5%8D%97.jpg)
+
+1.点击蓝色的 Code 部分；
 
 2.点击 Download ZIP 即可下载到本地
 
 3\*.（可选）若想随时同步本项目，可使用 git clone 本仓库。Git 教程可参考[Git 教程(快速上手，超详细)](https://blog.csdn.net/weixin_48152652/article/details/124258293)
+
+#### 贡献方式
 
 由于本项目体积（未来也许会）很大，故推荐采用在 GitHub Web 端直接上传 的方式，具体操作如下：
 
