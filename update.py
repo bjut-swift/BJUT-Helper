@@ -1,6 +1,7 @@
 import os
 from urllib.parse import quote
 
+
 EXCLUDE_DIRS = ['.git', 'docs', '.vscode', '.circleci', 'site']
 README_MD = ['README.md', 'readme.md', 'index.md']
 
