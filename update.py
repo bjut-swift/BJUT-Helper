@@ -1,6 +1,8 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import os
 from urllib.parse import quote
-import chardet  # 新增引入
 
 EXCLUDE_DIRS = ['.git', 'docs', '.vscode', '.circleci', 'site','.github']
 README_MD = ['README.md', 'readme.md', 'index.md']
@@ -22,12 +24,8 @@ def list_files(course: str):
         for f in files:
             if f not in README_MD:
                 if f.split('.')[-1] in TXT_EXTS:
-                    # 修改此处，使用 chardet 检测文件编码并指定正确的编码解决文档使用错误编码的问题。
-                    with open('{}/{}'.format(root, f), 'rb') as file:
-                        result = chardet.detect(file.read())
-                        file_encoding = result['encoding']
                     filelist_texts += '{}- [{}]({})\n'.format(subindent,
-                                                              f, TXT_URL_PREFIX + quote('{}/{}'.format(root, f)), encoding=file_encoding)
+                                                              f, TXT_URL_PREFIX + quote('{}/{}'.format(root, f)))
                 else:
                     filelist_texts += '{}- [{}]({})\n'.format(subindent,
                                                               f, BIN_URL_PREFIX + quote('{}/{}'.format(root, f)))
@@ -39,11 +37,7 @@ def list_files(course: str):
 def generate_md(course: str, filelist_texts: str, readme_path: str):
     final_texts = ['\n\n', filelist_texts]
     if readme_path:
-        # 修改此处，使用 chardet 检测文件编码并指定正确的编码解决文档使用错误编码的问题。
-        with open(readme_path, 'rb') as file:
-            result = chardet.detect(file.read())
-            file_encoding = result['encoding']
-        with open(readme_path, 'r', encoding=file_encoding) as file:
+        with open(readme_path, 'r') as file:
             final_texts = file.readlines() + final_texts
     with open('docs/{}.md'.format(course), 'w') as file:
         file.writelines(final_texts)
@@ -60,8 +54,8 @@ if __name__ == '__main__':
         filelist_texts, readme_path = list_files(course)
         generate_md(course, filelist_texts, readme_path)
 
-    with open('README.md', 'r', encoding='utf-8') as file:
+    with open('README.md', 'r') as file:
         mainreadme_lines = file.readlines()
 
-    with open('docs/index.md', 'w', encoding='utf-8') as file:
+    with open('docs/index.md', 'w') as file:
         file.writelines(mainreadme_lines)
