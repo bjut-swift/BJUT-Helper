@@ -52,8 +52,8 @@ if __name__ == '__main__':
         filelist_texts, readme_path = list_files(course)
         generate_md(course, filelist_texts, readme_path)
 
-    with open('README.md', 'r',encoding='utf-8') as file:
+    with open('README.md', 'r') as file:
         mainreadme_lines = file.readlines()
 
-    with open('docs/index.md', 'w',encoding='utf-8') as file:
+    with open('docs/index.md', 'w') as file:
         file.writelines(mainreadme_lines)
