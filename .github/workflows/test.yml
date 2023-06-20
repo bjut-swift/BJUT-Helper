@@ -31,7 +31,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Update dir
-        run: ../update.py
+        run: ./update.py
 
       - name: Deploy docs
         uses: mhausenblas/mkdocs-deploy-gh-pages@nomaterial
