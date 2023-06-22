@@ -1,6 +1,8 @@
 # BJUT-Helper
 
-<img src="https://raw.githubusercontent.com/Nagi-ovo/myIMG/main/front1.png" alt="front" width="600" height="500">
+<div align="center">
+    <img src="https://raw.githubusercontent.com/Nagi-ovo/myIMG/main/front1.png" alt="front" width="600" height="500">
+</div>
 
 ## Preface|引言
 
