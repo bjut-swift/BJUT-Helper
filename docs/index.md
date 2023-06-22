@@ -1,7 +1,7 @@
 # BJUT-Helper
 
 <div align="center">
-    <img src="./../src/front.png" alt="front" width="600" height="500">
+    <img src="https://s2.loli.net/2023/06/22/BAMsajNkq5V931c.png" alt="front" width="600" height="500">
 </div>
 
 ## Preface|引言
@@ -54,7 +54,7 @@ Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！
 #### b. 下载全部文件
 
 <div align="center">
-    <img src="https://s1.ax1x.com/2023/06/22/pCJt8f0.jpg" alt="front" width="500" height="500">
+    <img src="https://s2.loli.net/2023/06/22/nmkwgs1CZiAjMhe.jpg" alt="front" width="500" height="500">
 </div >
 
 1.点击蓝色的 Code 部分；
