@@ -39,13 +39,25 @@ Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！
 
 提交到内容推荐为 PDF 或 Markdown 格式，不建议上传教师课件。
 
-#### 下载方式
+## Download|下载方式
 
-![](https://raw.githubusercontent.com/Nagi-ovo/myIMG/main/%E4%B8%8B%E8%BD%BD%E9%A1%B9%E7%9B%AE%E6%8C%87%E5%8D%97.jpg)
+### 1. 手机端
 
-0.本项目的网页端可以提供部分文件下载功能，访问后点击想要的文件链接即可下载到本地
+可前往[工大喵平台](https://xiaoyuancat.com/)，搜索想要的文件按步骤即可下载到本地
 
-1.若想下载全部内容，请先点击蓝色的 Code 部分；
+### 2. 电脑端
+
+#### a. 下载部分文件
+
+可前往[工大喵平台](https://xiaoyuancat.com/)或者[本项目网页端](https://open-bjut.github.io/BJUT-AI/)，点击相应文件即可下载
+
+#### b. 下载全部文件
+
+<div align="center">
+    <img src="https://s1.ax1x.com/2023/06/22/pCJt8f0.jpg" alt="front" width="500" height="500">
+</div >
+
+1.点击蓝色的 Code 部分；
 
 2.点击 Download ZIP 即可下载到本地
 
