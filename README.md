@@ -1,5 +1,7 @@
 # BJUT-Helper
 
+<img src="https://raw.githubusercontent.com/Nagi-ovo/myIMG/main/front1.png" alt="front" width="600" height="500">
+
 ## Preface|引言
 
 （引自 [浙江大学课程攻略共享计划](https://github.com/QSCTech/zju-icicles) ）
