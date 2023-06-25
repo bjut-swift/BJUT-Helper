@@ -6,7 +6,7 @@
     
 </div>
 
-## Preface|引言
+## Preface | 引言
 
 （引自 [浙江大学课程攻略共享计划](https://github.com/QSCTech/zju-icicles) ）
 
@@ -22,7 +22,7 @@
 
 我希望只要是前人走过的弯路，后人就不必再走。这是我的信念，也是我建立这个项目的原因。
 
-## Contribution|贡献
+## Contribution | 贡献
 
 欢迎贡献！
 
@@ -37,13 +37,13 @@ Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！
 欢迎大家成为本仓库的贡献者！
 来自大家的关注、维护和贡献，才是让这个项目继续存在的动力~
 
-如果有对于课程的评价可写在对应课程文件夹的README.md中。
+如果有对于课程的评价可写在对应课程文件夹的 README.md 中。
 
 提交到内容推荐为 PDF 或 Markdown 格式，不建议上传教师课件。
 
 有志参与的同学请阅读我们的[贡献方式](#contribute)
 
-## Download|下载方式
+## Download | 下载方式
 
 ### 1. 手机端
 
@@ -69,17 +69,18 @@ Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！
 3\*.（可选）若想随时同步本项目，可使用 git clone 本仓库。Git 教程可参考[Git 教程- 廖雪峰的官方网站](https://www.liaoxuefeng.com/wiki/896043488029600)
 
 <a id="contribute"></a>
-#### 贡献方式
 
-##### 1. 工大喵平台（跨平台，操作简单）
+## Guidelines | 贡献方式
+
+### 1. 工大喵平台（跨平台，操作简单）
 
 访问[工大喵平台](https://xiaoyuancat.com/)，找到“图书”模块，登录后选择“新增图书”，按要求即可很轻松地完成文件上传。
 
-##### 2. GitHub（PC 端，需要学习）
+### 2. GitHub（PC 端，需要学习）
 
-###### a. 可观看 b 站视频[3 分钟成为 GitHub 开源项目贡献者](https://www.bilibili.com/video/BV1Fs4y1C7kS/?vd_source=0d0027b2a15be6333ab384009d32163d)，视频中（自认为）很清楚地展示了贡献开源项目的全流程。
+#### a. 可观看 b 站视频[3 分钟成为 GitHub 开源项目贡献者](https://www.bilibili.com/video/BV1Fs4y1C7kS/?vd_source=0d0027b2a15be6333ab384009d32163d)，视频中（自认为）很清楚地展示了贡献开源项目的全流程。
 
-###### b. 或阅读如下步骤
+#### b. 或阅读如下步骤
 
 由于本项目体积（未来也许会）很大，故推荐采用在 GitHub Web 端直接上传 的方式。
 具体操作如下：
@@ -97,13 +98,13 @@ Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！
 - 或者也可以直接附加在 Issue 中，由维护者进行添加。
 - 添加微信 Nag12333，由维护者进行/帮助添加。
 
-## Reminder|提醒
+## Reminder | 提醒
 
 提交前，建议（在备份完成后）先删除你的项目，重新 fork 、上传并重新提交 PR
 
 对 git 熟悉的话另说。
 
-## License|许可
+## License | 许可
 
 资料来自网络，相关权利仍由原作者所有，本项目仅用于收集现有资料。
 
@@ -113,7 +114,7 @@ Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！
 
 由于资料来源复杂，如果收录的资料侵犯了您的著作权，请发起 issue（未来将加入更多联系方式），我们将立即停止使用您的资料。
 
-## Related Works|相关项目
+## Related Works | 相关项目
 
 - [上海交通大学生存手册](https://survivesjtu.gitbook.io/survivesjtumanual/)
 - [浙江大学课程攻略共享计划](https://github.com/QSCTech/zju-icicles)
