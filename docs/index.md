@@ -37,9 +37,11 @@ Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！
 欢迎大家成为本仓库的贡献者！
 来自大家的关注、维护和贡献，才是让这个项目继续存在的动力~
 
-如果有对于课程的评价可写在对应课程文件夹的 README.md 中。
+如果有对于课程的评价可写在对应课程文件夹的README.md中。
 
 提交到内容推荐为 PDF 或 Markdown 格式，不建议上传教师课件。
+
+有志参与的同学请阅读我们的[贡献方式](#contribute)
 
 ## Download|下载方式
 
@@ -51,13 +53,13 @@ Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！
 
 #### a. 下载部分文件
 
-可前往[工大喵平台](https://xiaoyuancat.com/)或者[本项目网页端](https://open-bjut.github.io/BJUT-AI/)，点击相应文件即可下载
+手机端和电脑端均可使用[工大喵平台](https://xiaoyuancat.com/)，电脑端可以使用[本项目网页端](https://open-bjut.github.io/BJUT-AI/)，找到并点击相应文件即可下载
 
-#### b. 下载全部文件
+#### b. 下载全部文件（仅限 PC 端）
 
 <div align="center">
     <!--<img src="https://s2.loli.net/2023/06/22/nmkwgs1CZiAjMhe.jpg" alt="front" width="500" height="500"> !-->
-    <img src="https://thatwebsite.oss-cn-hongkong.aliyuncs.com/%E4%B8%8B%E8%BD%BD%E9%A1%B9%E7%9B%AE%E6%8C%87%E5%8D%97.jpg" alt = "instruct" width = "500" height="500">
+    <img src="https://thatwebsite.oss-cn-hongkong.aliyuncs.com/%E4%B8%8B%E8%BD%BD%E9%A1%B9%E7%9B%AE%E6%8C%87%E5%8D%97.jpg" alt="instruct" width="500" height="500"> 
 </div >
 
 1.点击蓝色的 Code 部分；
@@ -66,9 +68,21 @@ Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！
 
 3\*.（可选）若想随时同步本项目，可使用 git clone 本仓库。Git 教程可参考[Git 教程- 廖雪峰的官方网站](https://www.liaoxuefeng.com/wiki/896043488029600)
 
+<a id="contribute"></a>
 #### 贡献方式
 
-由于本项目体积（未来也许会）很大，故推荐采用在 GitHub Web 端直接上传 的方式，具体操作如下：
+##### 1. 工大喵平台（跨平台，操作简单）
+
+访问[工大喵平台](https://xiaoyuancat.com/)，找到“图书”模块，登录后选择“新增图书”，按要求即可很轻松地完成文件上传。
+
+##### 2. GitHub（PC 端，需要学习）
+
+###### a. 可观看 b 站视频[3 分钟成为 GitHub 开源项目贡献者](https://www.bilibili.com/video/BV1Fs4y1C7kS/?vd_source=0d0027b2a15be6333ab384009d32163d)，视频中（自认为）很清楚地展示了贡献开源项目的全流程。
+
+###### b. 或阅读如下步骤
+
+由于本项目体积（未来也许会）很大，故推荐采用在 GitHub Web 端直接上传 的方式。
+具体操作如下：
 
 - 首先 Fork 本项目
 
