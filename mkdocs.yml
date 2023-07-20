@@ -1,4 +1,6 @@
 site_name: 北京工业大学课程资料共享计划
+docs_dir: docs/
+repo_name: 'Open-BJUT/BJUT-Helper'
+repo_url: https://github.com/Open-BJUT/BJUT-Helper
 theme:
   name: material
-repo_url: https://github.com/Nagi-ovo/BJUT-Helper
