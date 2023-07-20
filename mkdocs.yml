@@ -1,3 +1,4 @@
-site_name: 北京工业大学课程资料共享计划
-theme: readthedocs
+site_name: BJUT课程资料共享计划
+theme:
+  name: readthedocs
 repo_url: https://github.com/Nagi-ovo/BJUT-Helper
