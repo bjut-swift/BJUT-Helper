@@ -7,30 +7,34 @@ EXCLUDE_DIRS = ['.git', 'docs', '.vscode', '.circleci', 'site','.github','src']
 README_MD = ['README.md', 'readme.md', 'index.md']
 
 TXT_EXTS = ['md', 'txt']
-TXT_URL_PREFIX = 'https://github.com/Nagi-ovo/BJUT-Helper/blob/master/'
-BIN_URL_PREFIX = 'https://github.com/Nagi-ovo/BJUT-Helper/raw/master/'
+TXT_URL_PREFIX = 'https://github.com/Open-BJUT/BJUT-Helper/blob/master/'
+BIN_URL_PREFIX = 'https://github.com/Open-BJUT/BJUT-Helper/raw/master/'
 
 
 def list_files(course: str):
-    filelist_texts = '## 文件列表\n\n'
+    filelist_texts = '## 文件列表\n'
     readme_path = ''
     for root, dirs, files in os.walk('./' + course):
         files.sort()
         level = root.replace(course, '').count(os.sep)
         indent = ' ' * 4 * level
-        filelist_texts += '{}- {}\n'.format(indent, os.path.basename(root))
+        filelist_texts += '\n{}- {}\n'.format(indent, os.path.basename(root))  # added newline at the beginning
         subindent = ' ' * 4 * (level + 1)
         for f in files:
             if f not in README_MD:
-                if f.split('.')[-1] in TXT_EXTS:
-                    filelist_texts += '{}- [{}]({})\n'.format(subindent,
-                                                              f, TXT_URL_PREFIX + quote('{}/{}'.format(root, f)))
+                ext = f.split('.')[-1]
+                if ext in TXT_EXTS:
+                    if ext == 'md':
+                        with open(os.path.join(root, f), 'r', encoding='utf-8') as md_file:
+                            filelist_texts += '{}- [{}]\n{}\n'.format(subindent, f, md_file.read())  # added filename before the file content
+                    else:
+                        filelist_texts += '{}- [{}]({})\n'.format(subindent, f, TXT_URL_PREFIX + quote('{}/{}'.format(root, f)))
                 else:
-                    filelist_texts += '{}- [{}]({})\n'.format(subindent,
-                                                              f, BIN_URL_PREFIX + quote('{}/{}'.format(root, f)))
+                    filelist_texts += '{}- [{}]({})\n'.format(subindent, f, BIN_URL_PREFIX + quote('{}/{}'.format(root, f)))
             elif root == course and readme_path == '':
-                readme_path = '{}/{}'.format(root, f)
+                readme_path = '\n\n{}/{}'.format(root, f)
     return filelist_texts, readme_path
+
 
 
 def generate_md(course: str, filelist_texts: str, readme_path: str):
