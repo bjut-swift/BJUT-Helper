@@ -26,7 +26,7 @@ def list_files(course: str):
                 if ext in TXT_EXTS:
                     if ext == 'md':
                         with open(os.path.join(root, f), 'r', encoding='utf-8') as md_file:
-                            filelist_texts += '{}- [{}]\n{}\n'.format(subindent, f, md_file.read())  # added filename before the file content
+                            filelist_texts += '{}- [{}]\n\n{}\n'.format(subindent, f, md_file.read())  # added filename before the file content
                     else:
                         filelist_texts += '{}- [{}]({})\n'.format(subindent, f, TXT_URL_PREFIX + quote('{}/{}'.format(root, f)))
                 else:
