@@ -17,16 +17,16 @@ theme:
   palette:
     - scheme: default
       toggle:
-        icon: material/toggle-switch-off-outline
+        icon: material/brightness-7
         name: Switch to dark mode
-      primary: blue
+      primary: cyan
       accent: default
     - scheme: slate
       toggle:
-        icon: material/toggle-switch
+        icon: material/brightness-4
         name: Switch to light mode
       primary: default
-      accent: blue
+      accent: cyan
 
 markdown_extensions:
   - pymdownx.highlight:
