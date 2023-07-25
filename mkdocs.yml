@@ -4,6 +4,8 @@ repo_name: 'Open-BJUT/BJUT-Helper'
 repo_url: https://github.com/Open-BJUT/BJUT-Helper
 theme:
   name: material
+  include_search_page: false
+  search_index_only: true
   features:
     - navigation.tabs
     - navigation.sections
@@ -29,6 +31,8 @@ theme:
         name: Switch to light mode
       primary: default
       accent: cyan
+
+  custom_dir: overrides
 
 markdown_extensions:
   - pymdownx.highlight:

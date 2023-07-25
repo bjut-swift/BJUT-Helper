@@ -1,3 +1,7 @@
+---
+comments: true
+---
+
 # BJUT-Helper
 
 <div align="center">
