@@ -4,6 +4,9 @@ repo_name: 'Open-BJUT/BJUT-Helper'
 repo_url: https://github.com/Open-BJUT/BJUT-Helper
 theme:
   name: material
+  language: zh
+  static_templates:
+    - 404.html
   include_search_page: false
   search_index_only: true
   features:
