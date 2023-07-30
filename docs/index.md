@@ -114,6 +114,10 @@ Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！
 
 由于资料来源复杂，如果收录的资料侵犯了您的著作权，请发起 issue 或发邮件至openbjut@163.com ，我们将立即停止使用您的资料。
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Open-BJUT/BJUT-Helper&type=Date)](https://star-history.com/#Open-BJUT/BJUT-Helper&Date)
+
 ## Related Works | 相关项目
 
 - [上海交通大学生存手册](https://survivesjtu.gitbook.io/survivesjtumanual/)
