@@ -25,10 +25,10 @@ jobs:
       #  with:
       #    python-version: 3.x
 
-      #- name: Install dependencies
-      #  run: |
-      #    python -m pip install --upgrade pip
-      #    pip install -r requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
       #- name: Update dir
       #  run: chmod +x ./update.py
