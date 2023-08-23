@@ -10,15 +10,13 @@ theme:
   include_search_page: false
   search_index_only: true
   features:
-    - navigation.tabs
-    - navigation.sections
-    - toc.integrate
+    - header.autohide
+    - navigation.tracking
     - navigation.top
-    - search.suggest
     - search.highlight
-    - content.tabs.link
-    - content.code.annotation
-    - content.code.copy
+    - search.share
+    - search.suggest
+    - content.code.annotate
   palette:
     - media: '(prefers-color-scheme: light)'
       scheme: default
