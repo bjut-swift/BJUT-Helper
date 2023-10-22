@@ -105,7 +105,7 @@ Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=Open-BJUT/BJUT-Helper&type=Date)](https://star-history.com/#Open-BJUT/BJUT-Helper&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=bjut-swift/BJUT-Helper&type=Date)](https://star-history.com/#bjut-swift/BJUT-Helper&Date)
 
 ## Related Works | 相关项目
 
