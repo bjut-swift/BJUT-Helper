@@ -1,7 +1,7 @@
 # BJUT-Helper
 
 <div align="center">
-    <img src = "images/title.png" alt = "front" width="500" height="400">
+    <img src = "docs/images/title.png" alt = "front" width="500" height="400">
     
 </div>
 
@@ -44,7 +44,11 @@ Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！
 
 ## Download | 下载方式
 
-### 下载全部文件（仅限 PC 端）
+### a. 下载部分文件
+
+使用[本项目网页端](https://open-bjut.github.io/BJUT-AI/)，找到并点击相应文件即可下载
+
+### b. 下载全部文件（仅限 PC 端）
 
 <div align="center">
     <!--<img src="https://s2.loli.net/2023/06/22/nmkwgs1CZiAjMhe.jpg" alt="front" width="500" height="500"> !-->
@@ -61,11 +65,11 @@ Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！
 
 ## Guidelines | 贡献方式
 
-### GitHub（PC 端，需要学习）
+## GitHub（PC 端，需要学习）
 
-#### a. 可观看 b 站视频[3 分钟成为 GitHub 开源项目贡献者](https://www.bilibili.com/video/BV1Fs4y1C7kS/?vd_source=0d0027b2a15be6333ab384009d32163d)，视频中（自认为）很清楚地展示了贡献开源项目的全流程。
+### a. 可观看 b 站视频[3 分钟成为 GitHub 开源项目贡献者](https://www.bilibili.com/video/BV1Fs4y1C7kS/?vd_source=0d0027b2a15be6333ab384009d32163d)，视频中（自认为）很清楚地展示了贡献开源项目的全流程。
 
-#### b. 或阅读如下步骤
+### b. 或阅读如下步骤
 
 由于本项目体积（未来也许会）很大，故推荐采用在 GitHub Web 端直接上传 的方式。
 具体操作如下：
@@ -101,7 +105,7 @@ Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=Open-BJUT/BJUT-Helper&type=Date)](https://star-history.com/#Open-BJUT/BJUT-Helper&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=bjut-swift/BJUT-Helper&type=Date)](https://star-history.com/#bjut-swift/BJUT-Helper&Date)
 
 ## Related Works | 相关项目
 
