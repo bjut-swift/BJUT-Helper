@@ -1,7 +1,7 @@
 # BJUT-Helper
 
 <div align="center">
-    <img src = "docs/images/title.png" alt = "front" width="500" height="400">
+    <img src = "docs/images/title.jpg" alt = "front" width="500" height="400">
     
 </div>
 
