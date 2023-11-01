@@ -50,7 +50,7 @@ Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！
 
 ### b. 下载单个文件夹
 
-复制想下载的文件夹网址，粘贴入[DownGit](https://minhaskamal.github.io/DownGit/#/home)中，点击 Download 即可。
+复制想下载的文件夹网址，粘贴入 [DownGit](https://minhaskamal.github.io/DownGit/#/home) 中，点击 Download 即可。
 
 ### c. 下载全部文件
 
