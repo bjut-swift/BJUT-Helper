@@ -3,8 +3,8 @@
 import os
 from urllib.parse import quote
 
-EXCLUDE_DIRS = ['.git', 'docs', '.vscode', '.circleci', 'site','.github','src','overrides']
-README_MD = ['README.md', 'readme.md', 'index.md']
+EXCLUDE_DIRS = ['.git', 'docs', '.vscode', '.circleci', 'site','.github','src','overrides', 'images']
+README_MD = ['README.md', 'readme.md']
 
 TXT_EXTS = ['md', 'txt']
 TXT_URL_PREFIX = 'https://github.com/bjut-swift/BJUT-Helper/blob/master/'
