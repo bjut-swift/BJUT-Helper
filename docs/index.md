@@ -1,7 +1,7 @@
 # BJUT-Helper
 
 <div align="center">
-    <img src = "./images/title.png" alt = "front" width="500" height="400">
+    <img src = "docs/images/title.png" alt = "front" width="500" height="400">
     
 </div>
 
@@ -52,7 +52,7 @@ Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！
 
 复制想下载的文件夹网址，粘贴入 [DownGit](https://minhaskamal.github.io/DownGit/#/home) 中，点击 Download 即可。
 
-### b. 下载全部文件（仅限 PC 端）
+### c. 下载全部文件
 
 <div align="center">
     <!--<img src="https://s2.loli.net/2023/06/22/nmkwgs1CZiAjMhe.jpg" alt="front" width="500" height="500"> !-->

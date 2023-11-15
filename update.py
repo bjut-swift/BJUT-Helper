@@ -7,8 +7,8 @@ EXCLUDE_DIRS = ['.git', 'docs', '.vscode', '.circleci', 'site','.github','src','
 README_MD = ['README.md', 'readme.md', 'index.md']
 
 TXT_EXTS = ['md', 'txt']
-TXT_URL_PREFIX = 'https://github.com/Open-BJUT/BJUT-Helper/blob/master/'
-BIN_URL_PREFIX = 'https://github.com/Open-BJUT/BJUT-Helper/raw/master/'
+TXT_URL_PREFIX = 'https://github.com/bjut-swift/BJUT-Helper/blob/master/'
+BIN_URL_PREFIX = 'https://github.com/bjut-swift/BJUT-Helper/raw/master/'
 
 
 def list_files(course: str):
