@@ -3,8 +3,8 @@
 import os
 from urllib.parse import quote
 
-EXCLUDE_DIRS = ['.git', 'docs', '.vscode', '.circleci', 'site','.github','src','overrides', 'images']
-README_MD = ['README.md', 'readme.md']
+EXCLUDE_DIRS = ['.git', 'docs', '.vscode', '.circleci', 'site','.github','src','overrides','images']
+README_MD = ['README.md', 'readme.md', 'index.md']
 
 TXT_EXTS = ['md', 'txt']
 TXT_URL_PREFIX = 'https://github.com/bjut-swift/BJUT-Helper/blob/master/'
@@ -12,29 +12,34 @@ BIN_URL_PREFIX = 'https://github.com/bjut-swift/BJUT-Helper/raw/master/'
 
 
 def list_files(course: str):
-    filelist_texts = '## 文件列表\n'
+    filelist_texts = '## 文件列表\n\n'
     readme_path = ''
     for root, dirs, files in os.walk('./' + course):
         files.sort()
-        level = root.replace(course, '').count(os.sep)
-        indent = ' ' * 2 * level
-        filelist_texts += '\n{}- {}\n'.format(indent, os.path.basename(root))  # added newline at the beginning
+        level = root.replace('./' + course, '').count(os.sep)
+        indent = ' ' * 4 * level
         subindent = ' ' * 4 * (level + 1)
+
+        if root != './' + course:  # For subdirectories
+            filelist_texts += '{}- {}\n\n'.format(indent, os.path.basename(root))
+        else:  # For the top-level directory (course directory itself)
+            filelist_texts += '- {}\n\n'.format(os.path.basename(root))
+
         for f in files:
-            if f not in README_MD and f != '.DS_Store':
+            if f not in README_MD:
                 ext = f.split('.')[-1]
+                file_path = os.path.join(root, f).replace('./', '')  # Remove './' from path
                 if ext in TXT_EXTS:
                     if ext == 'md':
-                        with open(os.path.join(root, f), 'r', encoding='utf-8') as md_file:
-                            filelist_texts += '{}- [{}]\n\n{}\n'.format(subindent, f, md_file.read())  # added filename before the file content
+                        filelist_texts += '{}- [{}]({})\n\n'.format(subindent, f, TXT_URL_PREFIX + quote(file_path))
                     else:
-                        filelist_texts += '{}- [{}]({})\n'.format(subindent, f, TXT_URL_PREFIX + quote('{}/{}'.format(root, f)))
+                        filelist_texts += '{}- [{}]({})\n\n'.format(subindent, f, TXT_URL_PREFIX + quote(file_path))
                 else:
-                    filelist_texts += '{}- [{}]({})\n'.format(subindent, f, BIN_URL_PREFIX + quote('{}/{}'.format(root, f)))
-            elif root == course and readme_path == '':
-                readme_path = '\n\n{}/{}'.format(root, f)
-    return filelist_texts, readme_path
+                    filelist_texts += '{}- [{}]({})\n\n'.format(subindent, f, BIN_URL_PREFIX + quote(file_path))
+            elif root == './' + course and readme_path == '':
+                readme_path = os.path.join(root, f)
 
+    return filelist_texts, readme_path
 
 
 def generate_md(course: str, filelist_texts: str, readme_path: str):
