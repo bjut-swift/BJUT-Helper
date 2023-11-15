@@ -1,8 +1,7 @@
 # BJUT-Helper
 
 <div align="center">
-    <img src = "/images/title.png" alt = "front" width="500" height="400">
-    
+    <img src="https://github.com/bjut-swift/BJUT-Helper/blob/master/images/title.png?raw=true" alt = "front" width="500" height="400">
 </div>
 
 ## Preface | 引言
