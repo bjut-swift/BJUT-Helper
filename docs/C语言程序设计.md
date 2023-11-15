@@ -2,13 +2,13 @@
 
 ## 文件列表
 
-    - C语言程序设计
+  - C语言程序设计
         - [2017-2018年第1学期《C语言》期末试卷.pdf](https://github.com/bjut-swift/BJUT-Helper/raw/master/./C%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/2017-2018%E5%B9%B4%E7%AC%AC1%E5%AD%A6%E6%9C%9F%E3%80%8AC%E8%AF%AD%E8%A8%80%E3%80%8B%E6%9C%9F%E6%9C%AB%E8%AF%95%E5%8D%B7.pdf)
         - [2018-2019 学年第1学期《C语言》期末试卷.pdf](https://github.com/bjut-swift/BJUT-Helper/raw/master/./C%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/2018-2019%20%E5%AD%A6%E5%B9%B4%E7%AC%AC1%E5%AD%A6%E6%9C%9F%E3%80%8AC%E8%AF%AD%E8%A8%80%E3%80%8B%E6%9C%9F%E6%9C%AB%E8%AF%95%E5%8D%B7.pdf)
         - [2019-2020 学年第1学期《C语言》期末试卷.pdf](https://github.com/bjut-swift/BJUT-Helper/raw/master/./C%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/2019-2020%20%E5%AD%A6%E5%B9%B4%E7%AC%AC1%E5%AD%A6%E6%9C%9F%E3%80%8AC%E8%AF%AD%E8%A8%80%E3%80%8B%E6%9C%9F%E6%9C%AB%E8%AF%95%E5%8D%B7.pdf)
         - [2020-2021 学年第1学期《C语言》期末试卷.pdf](https://github.com/bjut-swift/BJUT-Helper/raw/master/./C%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/2020-2021%20%E5%AD%A6%E5%B9%B4%E7%AC%AC1%E5%AD%A6%E6%9C%9F%E3%80%8AC%E8%AF%AD%E8%A8%80%E3%80%8B%E6%9C%9F%E6%9C%AB%E8%AF%95%E5%8D%B7.pdf)
 
-        - 课程设计
+    - 课程设计
             - [课程设计.md]
 
 22 信息安全 何贵意 高级语言程序课设 C语言 赛车游戏
@@ -58,7 +58,7 @@
 希望这个开源赛车游戏项目能对您有所帮助，祝您游戏愉快！
 
 
-        - 学习心得
+    - 学习心得
             - [22-信安-何贵意.md]
 
 22 级 信息安全 何贵意:
