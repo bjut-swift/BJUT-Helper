@@ -18,15 +18,15 @@ def list_files(course: str):
         files.sort()
         level = root.replace(course, '').count(os.sep)
         indent = ' ' * 4 * level
-        filelist_texts += '\n{}- {}\n'.format(indent, os.path.basename(root))  # added newline at the beginning
+        filelist_texts += '\n{}- {}\n'.format(indent, os.path.basename(root))
         subindent = ' ' * 4 * (level + 1)
         for f in files:
-            if f not in README_MD:
+            if f not in README_MD and f != '.DS_Store':  # 跳过 .DS_Store 文件
                 ext = f.split('.')[-1]
                 if ext in TXT_EXTS:
                     if ext == 'md':
                         with open(os.path.join(root, f), 'r', encoding='utf-8') as md_file:
-                            filelist_texts += '{}- [{}]\n\n{}\n'.format(subindent, f, md_file.read())  # added filename before the file content
+                            filelist_texts += '{}- [{}]\n\n{}\n'.format(subindent, f, md_file.read())
                     else:
                         filelist_texts += '{}- [{}]({})\n'.format(subindent, f, TXT_URL_PREFIX + quote('{}/{}'.format(root, f)))
                 else:
