@@ -53,4 +53,4 @@ markdown_extensions:
       emoji_generator: !!python/name:materialx.emoji.to_svg
 
 copyright: |
-  &copy; 2023 <a href="https://github.com/Open-BJUT"  target="_blank" rel="noopener">Open-BJUT</a>
+  &copy; 2023 <a href="https://github.com/bjut-swift"  target="_blank" rel="noopener">Open-BJUT</a>
