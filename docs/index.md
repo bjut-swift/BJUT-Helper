@@ -43,6 +43,10 @@ Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！
 
 ## Download | 下载方式
 
+### 阿里云盘
+[云盘地址](https://www.aliyundrive.com/s/inZe7RQTFMY)
+提取码: 9jh1
+
 ### a. 下载部分文件
 
 使用[本项目网页端](https://open-bjut.github.io/BJUT-AI/)，找到并点击相应文件即可下载
