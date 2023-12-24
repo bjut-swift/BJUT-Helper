@@ -43,9 +43,10 @@ Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！
 
 ## Download | 下载方式
 
+    提示：GitHub仓库界面按下快捷键`t`，就能进入文件搜索模式，输入你想要寻找的文件名或者文件夹名，即可实时展示搜索结果
+
 ### 阿里云盘
-[云盘地址](https://www.aliyundrive.com/s/inZe7RQTFMY)
-提取码: 9jh1
+已失效，请前往[工大喵](www.xiaoyuancat.com)主页查看新地址。
 
 ### a. 下载部分文件
 
