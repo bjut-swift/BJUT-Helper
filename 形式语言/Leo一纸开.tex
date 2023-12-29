@@ -1,0 +1,832 @@
+\documentclass[twocolumn,zihao=5,linespread=1,heading=false,autoindent=0pt]{ctexart}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,top=1cm,bottom=1cm,left=1cm,right=1cm,marginparwidth=1.75cm]{geometry}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{outlines}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{amsthm}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{cancel}
+\usepackage[colorlinks=false, allcolors=blue]{hyperref}
+\renewcommand{\tableautorefname}{表}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+\DeclarePairedDelimiter{\paren}{(}{)}
+\graphicspath{ {./images/} }
+
+\makeatletter
+\DeclareRobustCommand{\em}{%
+  \@nomath\em \if b\expandafter\@car\f@series\@nil
+  \normalfont \else \heiti\bfseries \fi}
+\makeatother
+
+\usetikzlibrary{automata,positioning}
+\newcommand{\hl}[1]{\colorbox{yellow}{#1}}
+\newcommand{\tto}{\Rightarrow}
+\pagestyle{empty}
+\newenvironment{citemize}%
+{\begin{itemize}[parsep=0pt,itemsep=0pt,topsep=0pt,partopsep=0pt]}
+{\end{itemize}}
+\newenvironment{cenumerate}%
+{\begin{enumerate}[parsep=0pt,itemsep=0pt,topsep=0pt,partopsep=0pt]}
+{\end{enumerate}}
+\linespread{1}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\baselineskip}{0pt}
+\setlength{\abovedisplayskip}{0pt}
+\setlength{\belowdisplayskip}{0pt}
+\setlength{\abovedisplayshortskip}{0pt}
+\setlength{\belowdisplayshortskip}{0pt}
+\titlespacing*{\section}{0pt}{0pt}{0pt}
+\titlespacing*{\subsection}{0pt}{0pt}{0pt}
+\titlespacing*{\subsubsection}{0pt}{0pt}{0pt}
+
+\setlength{\floatsep}{0pt plus 2pt minus 2pt}
+\setlength{\textfloatsep}{0pt plus 2pt minus 2pt}
+\setlength{\intextsep}{0pt plus 2pt minus 2pt}
+\newcommand{\includedrawio}[2][]{
+    \immediate\write18{/Applications/draw.io.app/Contents/MacOS/draw.io #2 --crop -x -o #2.pdf}
+    \includegraphics[#1]{#2.pdf}
+}
+
+\ctexset{
+    section = {
+        titleformat = \raggedright,
+        format += \small,
+        name = {,},
+    },
+    subsection/format += \small,
+    subsubsection/format += \small,
+    paragraph = {
+        runin = false
+    },
+    today = small,
+    figurename = 图,
+    contentsname = 目录,
+    tablename = 表,
+}
+
+\newtheoremstyle{exampstyle}
+  {0pt} % Space above
+  {0pt} % Space below
+  {} % Body font
+  {} % Indent amount
+  {\bfseries} % Theorem head font
+  {} % Punctuation after theorem head
+  {2ex} % Space after theorem head
+  {} % Theorem head spec (can be left empty, meaning `normal')
+
+\theoremstyle{exampstyle} \newtheorem{definition}{定义}[section]
+\theoremstyle{exampstyle} \newtheorem{example}{例}[section]
+\theoremstyle{exampstyle} \newtheorem{theorem}{定理}[section]
+\theoremstyle{exampstyle} \newtheorem{lemma}{引理}[section]
+\theoremstyle{exampstyle} \newtheorem{myproof}{证明}[section]
+
+\begin{document}
+\section{语言与文法}
+\footnotesize
+
+句子的逆 $x^R$ or $x^T$.
+
+\begin{definition}
+    文法（Grammar）G是一个四元组
+    $
+        G = (V, T, P, S)
+    $
+    其中，
+
+    V--- \emph{变量（Variable）}的非空有穷集。$\forall A \in V$，
+    $A$叫做语法变量（syntactic variable），也叫非终极符号（nonterminal）。
+    
+    T--- \emph{终极符（Terminal）}的非空有穷集。$\forall a \in T$，
+    $a$叫做终极符。 $V \cup T = \emptyset$。
+
+    P--- \emph{产生式（Production）}的非空有穷集。对于$a \to b$，
+    $a$是\emph{左部}，$b$是\emph{右部}。
+
+    S--- $S \in V$，文法G的\emph{开始符号（Start symbol）}。
+\end{definition}
+
+\begin{outline}[citemize]
+    \1 只写产生式，第一个产生式的左部为开始符号
+    \1 对一组有相同左部的产生式 \\
+        $\alpha \to \beta_1, \alpha \to \beta_2, \alpha \to \beta_3, \dots$
+        可以记为 $\alpha \to \beta_1 | \beta_2 | \beta_3 \dots$
+        $\beta_1 , \beta_2 , \beta_3$称为\emph{候选式}（Candidate）
+    \1 形如$\alpha \to \epsilon$的产生式叫做空产生式，也叫做$\epsilon$产生式
+        \2 英文大写字母为\emph{语法变量}
+        \2 英文小写字母为\emph{终结符号}
+        \2 英文较后的大写字母为\emph{语法变量或者终极符号}
+        \2 英文较后的大写字母为\emph{终极符号行}
+        \2 希腊字母表示\emph{语法变量和终极符号组成的行}
+\end{outline}
+
+\begin{definition}
+    设$G = (V,T,P,S)$是一个文法，如果
+    $\alpha \to \beta\in P, \gamma,\delta  \in (V \cup T)$，则称
+    $\gamma\alpha\delta$在$G$中\emph{直接推导}（Derivation）出$\gamma\beta\delta$，记作
+    $\gamma\alpha\delta \underset{G} \Rightarrow \gamma\beta\delta$。
+
+    于此相对应，$\gamma\beta\delta$归约到$\gamma\alpha\delta$，简称$\beta$归约为$\alpha$。
+
+    $\underset{G} \Rightarrow$ 是$\left( V \cup T \right)^*$上的二元关系。
+\end{definition}
+
+\begin{definition}对于文法$G$：
+    $\underset{G}{\overset{n}\Longrightarrow } = \left(\underset{G} \Rightarrow \right)^n $ 
+    $\underset{G}{\overset{*}\Longrightarrow } = \left(\underset{G} \Rightarrow \right)^* $
+    $\underset{G}{\overset{=}\Longrightarrow } = \left(\underset{G} \Rightarrow \right)^+ $
+\end{definition}
+
+\begin{definition}
+    对于语言$G = (V, T, P, S)$：
+
+    语法范畴A $L(A) = \set*{w | w \in T^* \text{且} A \overset{*}\Rightarrow w}$
+
+    语言（Language） $L(G) = \set*{w | w \in T^* \text{且} S \overset{*}\Rightarrow w}$
+
+    句子（Sentence） $\forall w \in L(G)$
+
+    句型（Sentential Form） $\forall \alpha \in (V \cup T)^*$， 
+    如果$S \overset{*}\Rightarrow \alpha$，则称$\alpha$是$G$产生的一个句型。
+    
+\end{definition}
+
+\begin{definition}
+    对于文法 $G_1, G_2$，如果$L(G_1) = L(G_2)$，则称$G_1$与$G_2$等价。
+\end{definition}
+
+\subsection{文法的乔姆斯体系}
+\begin{definition}
+    对于文法$G = (V,T,P,S)$： \\
+    G叫做0型文法，也叫短语结构文法（PSG，Phrase Structure Grammar） \\
+    $L(G)$是0型语言，也叫短结构语言，可递归枚举集。
+\end{definition}
+\begin{definition}
+    对于0型文法文法$G = (V,T,P,S)$： \\
+    $\forall \alpha \to \beta \in P$，$|\beta| \geq |\alpha|$，
+    则G是1型文法，或上下文有关文法。
+\end{definition}
+\begin{definition}
+    对于1型文法文法$G = (V,T,P,S)$： \\
+    $\forall \alpha \to \beta \in P$，$|\beta| \geq |\alpha|$，
+    $\alpha \in V$
+    则G是2型上下文无关文法。
+\end{definition}
+\begin{definition}
+    对于2型文法文法$G = (V,T,P,S)$： 
+    $\forall \alpha \to \beta \in P$： 
+    $A \to wB$和$A \to w$，其中$A,B \in V, w \in T^+$：G是右线性文法。 
+    $A \to Bw$和$A \to w$，其中$A,B \in V, w \in T^+$：G是左线性文法。 
+    则G是3型文法，或正则文法。
+\end{definition}
+
+\subsection{空产生式}
+允许在CSG，CFG，RG文法中存在空产生式。 
+
+允许在CSL，CFL，RL语言中存在空语句。
+
+左右线性文法等价，其中左线性的表述好。\emph{左右都有的线性文法不是正则文法}。
+
+$\forall G, \exists G', L(G') = L(G)$，但是$G'$中的开始符号不出现在任何
+    产生式的右部，且在$\epsilon \in L(G')$时，$G'$中只有$S' \to \epsilon$这样一个
+    $\epsilon$产生式。\emph{可以去S产生式和$\epsilon$产生式}
+
+\subsubsection{语言运算}
+给定上下文无关文法$G_1,G_2$，构造$G$使得：
+\begin{outline}[cenumerate]
+    \1 $L(G) = L(G_1)L(G_2)$ \\
+        其中$V_1 \cup V_2 = \emptyset$， $S \notin V_1 \cup V_2$
+
+        $G = (V_1 \cup V_2 \cup {S}, T, P_1 \cup P_2 \cup {S \to S_1S_2}, S)$
+
+    \1 $L(G) = L(G_1) \cup L(G_2)$
+
+        $G_\cup = (V_1 \cup V_2 \cup {S}, T, P_1 \cup P_2 \cup P_3, S)$ \\
+        $P_3 = \set*{S \to S_1 | S_2}$
+
+    \1 $L(G) = L(G_1)^*$
+
+        $G_* = \paren*{V_1 \cup \set*{S}, T, P_1 \cup P_2, S}$ \\
+        $P_2 = \set*{S \to \epsilon | SS_1}$
+
+\end{outline}
+
+给定RG $G_1,G_2$，构造RG $G$使得：
+\begin{outline}[cenumerate]
+    \1 $L(G) = L(G_1)L(G_2)$ \\
+        其中$V_1 \cup V_2 = \emptyset$， $S \notin V_1 \cup V_2$
+
+        $G = (V_1 \cup V_2 \cup {S}, T, P_1' \cup P_2 \cup P_3, S_1)$
+
+        $P_1' = \set*{A \to a B | A \to a B \in P_1}$
+        $P_3 = \set*{A \to a S_2 | A \to a \in P_1}$
+
+    \1 $L(G) = L(G_1) \cup L(G_2)$
+
+        $G_\cup = (V_1 \cup V_2 \cup {S}, T, P_1 \cup P_2 \cup P, S)$
+
+        $P = \set*{S \to \alpha | S_1 \to \alpha \in P_1} \cup \set*{S \to \alpha | S_2 \to \alpha \in P_2}$
+
+    \1 $L(G) = L(G_1)^*$
+
+    $G_\cup = (V_1 \cup {S}, T, P_1 \cup P, S)$
+    $\begin{aligned}
+        P & = \set*{S \to \epsilon | S_1S}
+    \end{aligned}$
+\end{outline}
+\begin{definition}
+    $M = (Q, \Sigma, \delta, q_0, F)$，其中：
+
+    \begin{description}[parsep=0pt,itemsep=0pt,topsep=0pt,partopsep=0pt]
+        \item[$Q$]：状态的有穷集合
+        \item[$\Sigma$]： 输入字母表
+        \item[$\delta$]： 状态转义函数
+            $Q\times\Sigma \to Q$。 $\forall (q,a) \in Q\times\Sigma$，
+            $\delta(q,a) = p$
+        \item[$q_0$]：开始状态
+        \item[$F$]： 终止状态 
+    \end{description}
+\end{definition}
+\begin{definition}
+    扩展$\delta$为$\hat{\delta}: Q \times \Sigma^* \to Q$
+    \begin{cenumerate}
+        \item $\hat{\delta}(q,\epsilon) = q$
+        \item $\hat{\delta}(q, wa) = \delta(\hat{\delta}(q,w), a)$
+    \end{cenumerate}
+    注意到 $Q \time \Sigma \subset Q \times \Sigma^*$，
+    且对$\forall (q, a) \in Q \times \Sigma$，$\hat{\delta}(q, a) = \delta(q, a)$
+    所以，不用区分$\delta$与$\hat{\delta}$。 \\
+    $\delta$是$Q \times \Sigma^* \to Q$上的映射。
+\end{definition}
+
+\begin{definition}
+    有穷状态自动机$M = (Q, \Sigma, \delta, q_0, F)$识别的语言：
+    $L(M) = \set*{x | \delta(q_0, x) \in F}$
+\end{definition}
+
+\begin{definition}
+    有穷状态自动机$M_1, M_2$：若有$L(M_1) = L(M_2)$，则称二者等价。
+\end{definition}
+
+\begin{definition}
+    对于有穷自动状态机$M = (Q, \Sigma, \delta, q_0, F)$
+    
+    $set(q) = \set*{x | \delta(q_0, x) = q}$
+
+    所以有：$\Sigma^* = \bigcup_{q \in Q}set(q)$
+
+    $\forall q,p \in Q, q \ne p, set(q) \cap set(p) = \emptyset $
+
+    同时，如果$Q$中不存在不可达状态，则$set(q_0), set(q_1) \dots$
+    是$\Sigma^*$的一个划分。
+\end{definition}
+
+\begin{definition}
+    $
+    x R_M y \iff \delta(q_0, x) = \delta(q_0, y)
+            \iff \exists q \in Q, x, y \in set(q)
+    $
+\end{definition}
+
+
+\begin{example}
+    对于FSA $M = (Q, \Sigma, \delta, q_0, F)$，构造FA 
+    $M'$使得$L(M') = \Sigma^* - L(M)$ \quad$M' = (Q, \Sigma, \delta, q_0, \complement_QF )$
+\end{example}
+
+\begin{example}
+    给定 $
+        M_1 = (Q_1, \Sigma, \delta_1, q_{01}, F_1)\quad
+        M_2 = (Q_2, \Sigma, \delta_2, q_{02}, F_2)
+    $
+    构造：
+    \begin{outline}[citemize]
+        \1 $M_3$使得$L(M_3) = L(M_1) \cap L(M_2)$
+
+
+        $M = (Q_1 \times Q_2, \Sigma, \delta, [q_{01}, q_{02}], F_1 \times F_2 )$
+
+
+        \1 $M_3$使得$L(M_3) = L(M_1) \cup L(M_2)$
+
+        $M = (Q_1 \times Q_2, \Sigma, \delta, [q_{01}, q_{02}], Q_1 \times F_2 \cup F_1 \times Q_2)$
+
+        $\delta([q, p], a) = [\delta_1(q, a), \delta_2(p, a)]$
+    \end{outline}
+\end{example}
+
+\subsection{NFA 不确定的有穷状态自动机}
+\begin{definition}
+    NFA $M = (Q, \Sigma, \delta, q_0, F)$，其中：
+
+    $Q, \Sigma, q_0, F$ 同 FA。
+
+    $\delta$: $Q \times \Sigma \to 2^Q$ (幂集)，
+    $\delta(q, a) = \set*{p_1, p_2, \dots, p_n}$ 可选一个进入
+
+    扩展$\delta$为$\hat{\delta}: Q \times \Sigma^* \to 2^Q$ ~~
+    $
+            \hat{\delta}(q,\epsilon)  = \set*{q} 
+    $ ~~
+    $
+            \hat{\delta}(q, wa) = \bigcup_{q_0 \in \hat{\delta}(q,w)}\delta(q_0, a)
+    $
+
+    进一步拓展： $\hat{\delta}: 2^Q \times \Sigma^* \to 2^Q$
+    $
+        \hat{\delta}(P, x) = \bigcup_{p \in P}\hat{\delta}(p, x)
+    $
+
+    对$\forall (q, a) \in Q \times \Sigma^*$，$\hat{\delta}(q, a) = \delta(q, a)$
+    所以不用区分$\delta$与$\hat{\delta}$。 
+
+    $\delta$是$Q \times \Sigma^* \to 2^Q$上的映射。
+\end{definition}
+
+
+\begin{theorem}
+    NFA与DFA等价。
+
+    证：对于NFA $ M= (Q, \Sigma, \delta, q_0, F)$，构造
+    DFA $M' = (2^Q, \Sigma, \delta', [q_0], F')$
+
+    $F'= \set*{[q_1, q_2, \dots, q_n] |
+     \set*{q_1, q_2, \dots, q_n} \cap F \ne \emptyset}$
+
+    $\delta'([q_1, q_2, \dots, q_n], a) = 
+    [\beta_1, \beta_2, \dots, \beta_n] \iff 
+    \delta(\set*{q_1, q_2, \dots, q_n}, a) = \set*{\beta_1, \beta_2, \dots, \beta_n}
+    $
+
+    所以，对于$\forall M$ 是NFA，可以构造DFA $M'$
+\end{theorem}
+
+\subsection{带空移动的有穷状态自动机}
+
+\begin{definition}
+    $\epsilon-\mathrm{NFA}$ $M=(Q,\Sigma,\delta,q_0,F)$：
+
+    $\delta$：状态转义函数。
+    $\delta: Q \times (\Sigma \cup \set*{\epsilon}) \to 2^Q$
+
+    其中，对于$\forall q \in Q, \delta(q, \epsilon)=\set*{p_1, p_2, \dots, p_n}$：
+    表示在$q$状态不读入任何字符，可以将状态变为$p_1, p_2, \dots, p_n$，称为
+    $M$在$q$状态做了一次空移动
+
+
+    \begin{outline}[cenumerate]
+        \1 $\epsilon-CLOSURE(q) = \set{p | \text{从q到p有一条标记为}
+        \epsilon\text{的路}}$
+        \1 $\epsilon-CLOSURE(P) = \bigcup_{p \in P}\epsilon-CLOSURE(p)$
+        \1 $\hat{\delta}(q, \epsilon) = \epsilon-CLOSURE(q)$
+        \1 $\hat{\delta}(q, wa) = \epsilon-CLOSURE(P)$ \quad $P = \bigcup_{r \in \hat{\delta}(q,w)}\delta(r, a)$
+
+            
+        \1 进一步拓展$\delta: 2^Q \times \Sigma \to w^Q$: \quad$\delta(P, a) = \bigcup_{q \in P}\delta(q, a)$
+
+        \1 进一步拓展$\hat{\delta}: 2^Q \times \Sigma^* \to 2^Q$： \quad$\delta(P, w) = \bigcup_{q \in P}\hat{\delta}(q, w)$
+
+            \emph{注意：$\hat{\delta} \ne \delta$, $\delta(q, a)$只要a不是$\epsilon$，就不能走空移动。 反过来，$\hat{\delta}(q,w)$在w字符串的中间可以走任意个空移动}
+    \end{outline}
+\end{definition}
+
+\begin{definition}
+    $\epsilon-NFA$ $M$识别的语言：
+    $L(M) = \set{x|\hat{\delta}(q_0, x) \cap F \ne \emptyset}$
+\end{definition}
+
+\begin{theorem}
+    $\epsilon-NFA$ 等价与 $NFA$。
+
+    证明：设$\epsilon-NFA$ $M = (Q, \Sigma, \delta, q_0, F)$：
+
+    取$M' = \left(Q, \Sigma, \hat{\delta}, q_0, \begin{cases}
+        F \cup \set*{q_0} & F \cap \epsilon-CLOSURE(q_0) \ne \emptyset \\
+        F & F \cap \epsilon-CLOSURE(q_0) = \emptyset
+    \end{cases}\right)$
+\end{theorem}
+
+由此可见，$DFA$，$NFA$，$\epsilon-NFA$等价。以后统称为FA。
+
+\subsection{FA与RG等价}
+
+\begin{theorem}
+    对$\forall\;DFA\;M,\;\exists\;RG\;G$使得$L(G) = L(M)$。
+
+    构造：对于$DFA\; M=(Q,\Sigma,\delta,q_0, F)$，取RG
+    $G=(Q, \Sigma, P, q_0)$
+
+    $\begin{aligned}
+        P &= \set*{q \to ap | \delta(q, a) = p} \cup 
+    \set*{q \to a | \forall \delta(q, a) \in F} \cup
+    \set*{q_0 \to \epsilon | q_0 \in F} \\
+        & = \set*{q \to ap | \delta(q, a) = p} \cup 
+        \set*{q \to \epsilon | q \in F} \\
+    \end{aligned}$
+\end{theorem}
+
+\begin{theorem}
+    对$\forall\;\text{RG}\;G,\;\exists\; \text{FA} \;M$使得$L(G) = L(M)$。
+
+    构造：对于RG $G=\paren*{V, T, P, S}$，RG为右线性文法。
+
+    取FA $M=(V \cup \set*{f},T,\delta,S, \set*{f})$，其中
+
+    $\delta(A, a) = \set*{B | \forall A \to aB \in P} \cup 
+    \set*{f | \forall A \to a \in P} 
+    $
+\end{theorem}
+
+\section{正则表达式}
+
+\begin{definition}
+    $\sigma$上的RE是满足如下条件的式子：
+    \begin{outline}[citemize]
+        \1 $\epsilon$ 是RE，表示的语言$L(\epsilon) = \set*{\epsilon}$
+        \1 $\emptyset$ 是RE，表示的语言$L(\emptyset) = \emptyset$
+        \1 $\forall a \in \sigma,\; a$是RE，表示的语言$L(a) = \set{a}$
+        \1 $\forall r, s$是RE且分别表示$R,S$，则有：
+            \2 $(r+s)$是RE，表达的语言$L(r+s) = R \cup S$
+            \2 $(rs)$是RE，表达的语言$L(rs) = RS$
+            \2 $(r^*)$是RE，表达的语言$L(r^*) = R^*$
+    \end{outline}
+    约定1：运算符优先级$* > \times > +$ \\
+    约定2：引入正闭包$r^+ = r^*r$
+\end{definition}
+
+\subsection{RE \textrightarrow FA}
+
+\begin{figure}[H]
+    \centering
+    \includedrawio[width=0.6\columnwidth]{re-to-fa.drawio}
+\end{figure}
+\begin{theorem}
+    对于$\forall$ RE $r, \exists$ FA $M$，使得$L(M) = L(r)$
+\end{theorem}
+
+\section{正则语言的性质}
+\subsection{正则语言的泵引理}
+\begin{lemma}
+    正则语言的的泵引理。对于$\forall\; RL\; L$，存在一个仅依赖与$L$的正整数$N$，对于$\forall z
+    \in L, |z| \ge N$,则存在$u, v, w$满足以下条件：
+
+    \centerline{
+        $uvw = z$ \quad
+        $|uv| \le N$ \quad
+        $|v| \ge 1$ \quad
+        对于$\forall k \ge 0$，$uv^kw \in L$
+    }
+\end{lemma}
+
+\begin{lemma}
+    拓展的泵引理。对于$\forall\; RL\; L$，存在一个仅依赖与$L$的正整数$N$，对于$\forall z = z_1z_2z_3
+    \in L, |z_2| \ge N$,则存在$u, v, w$满足以下条件：
+
+    \centerline{$uvw = z_2 \quad |uv| \le N \quad |v| \ge 1 \quad \text{对于}\forall k \ge 0, uv^kw \in L$}
+\end{lemma}
+
+\begin{example}
+    证明$L=\set{0^p|p\text{是质数}}$不是RL。
+
+    设$L$是RL。$N$是泵引理所说正整数。设$x$为大于$N$的最小质数。
+
+    取$z = 0^x$。取$v = 0^l,\; l \ge 1$。$uv^kw = 0^{x+(k-1)l}$。
+
+    当$k = x+1$时，有$x+(x+1-1)l = (l+1)x$是合数，所以$uv^kw \notin L$，与泵引理矛盾。所以L不是RL。
+\end{example}
+
+\begin{theorem}
+    RL对于并、乘、闭包、交、补封闭。
+\end{theorem}
+
+\subsection{Myhill定理}
+\begin{definition}
+    $\begin{aligned}[t]
+        x R_M y & \iff \delta(q_0, x) = \delta(q_0, y) \\
+            & \iff \exists q \in Q, x, y \in set(q)
+    \end{aligned}$
+\end{definition}
+\begin{definition}
+    $\begin{aligned}[t]
+        x R_L y & \iff \forall z \in \Sigma^*, xz \in L \iff yz \in L
+    \end{aligned}$
+\end{definition}
+\begin{definition}
+    R是右不变的是指如果$xRy$则有$\forall z \in \Sigma^*, xzRyz$
+\end{definition}
+\begin{theorem}
+    对于DFA M，如果$x R_M y$，则$x R_{L(M)} y$。
+    
+    证明：由$x R_M y$知$\delta(q_0, x) = \delta(q_0, y)$。不妨设其为
+    $q_1$。
+
+    对于$\forall z \in \Sigma^*$，$\delta(q_0, xz) =  \delta(\delta(q_0, x), z) = \delta(q_1, z) 
+    = \delta(q_0, yz)$。不妨设其为$q_2$。
+
+    如果$xz \in L$，则有$q_2 \in F$，所以$yz \in L$。反之亦然。
+
+    所以 $xz \in L \iff yz \in L$。
+    所以 $x R_M y \iff x R_{L(M)} y$
+    \qed
+\end{theorem}
+
+\begin{theorem}
+    Myhill定理。以下3个命题等价：
+    \begin{outline}[cenumerate]
+        \1 L 是 RL
+        \1 L 是 $\Sigma^*$上的某个具有有穷指数的右不变等价关系的某些等价类的并。
+        \1 $R_L$ 具有有穷指数。
+    \end{outline}
+
+    \begin{myproof}
+        $1 \Rightarrow 2$。 设L是RL，DFA M使得$L(M) = L$。
+
+        $R_M$是$\Sigma^*$上的右不变等价关系，且$|\Sigma^* / R_M| \le |Q|$。
+
+        $ L = \bigcup_{q \in F}set(q)$
+    \end{myproof}
+
+    \begin{myproof}
+        $2 \Rightarrow 3$。 设$L$是$\Sigma^*$上的具有有穷指数的右不变等价关系$R$的某些等价类的并。
+
+        下面证明如果$x R y$，那么$x R_L y$。
+
+        设$x, y \in \Sigma^*, xRy$。由$R$的右不变性，对于$\forall z \in \Sigma^*$，$xzRyz$。
+
+        再注意到$L$是$R$的某些等价类的并，且$xz,yz$在同一个等价类中，所以$xz \in L \iff yz \in L$。
+        
+        所以$x R_L y$。
+    \end{myproof}
+
+    \begin{myproof}
+        $3 \Rightarrow 1$。 设$R_L$具有有穷指数。取$M' = (\Sigma^*/R_L, \Sigma, \delta', [\epsilon], \set{[x] | x \in L})$
+
+        $\delta'([a], x) = [ax]$。显然，$L(M') = L$。
+    \end{myproof}
+\end{theorem}
+
+\hl{意义：L是RL的充要条件}
+
+\begin{theorem}
+    在同构意义下，$M'$是状态最少的唯一识别L的DFA。
+\end{theorem}
+
+\subsubsection{证明L 是/不是 RL}
+\begin{outline}[cenumerate]
+    \1 证明L是RL。 证明$R_L$的指数有穷。 \emph{列举所有等价类即可}
+    \1 证明L不是RL。 证明$R_L$的指数无穷。
+\end{outline}
+\begin{example}
+    证明 $\set{0^n1^n | n \ge 0}$ 不是RL。
+
+    易得，对于$\forall i \ne j \in N$，$0^i \cancel{R_L} 0^j$
+    因此$R_L$的指数无穷。
+\end{example}
+
+\subsection{DFA的最小化}
+标记终止状态和非终止状态不能合并 \\
+逐个判断其他的能否合并
+
+\section{CFL 上下文无关语言}
+\subsection{CFG}
+\begin{definition}
+    CFG $G=(V, T, P, S)$的语法树为满足如下条件的树：
+
+    \begin{outline}[cenumerate]
+        \1 每个节点的标记$x \in V \cup T \cup \set{\epsilon}$
+        \1 如果节点V的标记为$A$，V从左到右的子节点$V_1,V_2,\dots,V_k$
+        的标记依次为$y_1,y_2,\dots,y_k$，则$A \to y_1y_2\dots y_k \in P$
+        \1 根节点标记为S
+        \1 中间节点的标记为变量$x \in V$
+        \1 从左到右的叶子节点$v_1,\dots,v_n$的标记$x_1,\dots,x_n$
+        组成的串$x_1x_2\dots x_n$为该树的结果。
+        \1 如果v的标记为$\epsilon$，则它没有兄弟。
+    \end{outline}
+\end{definition}
+\begin{definition}
+    满足语法树定义中除第三条外条件的树，称作A-子树。
+\end{definition}
+\begin{theorem}
+    有一颗结果为$\alpha$的语法树$\iff S \overset{*} \Rightarrow \alpha $
+\end{theorem}
+\begin{definition}
+    每一步派生均实施在当前句型最右变量上的派生叫最右派生。
+
+    每一步派生均实施在当前句型最左变量上的派生叫最左派生。
+\end{definition}
+\begin{theorem}
+    最左派生与最右派生的语法树是一一对应的。
+\end{theorem}
+\begin{definition}
+    如果CFG G有句子有棵颗不同的语法书，则G是二义性的。
+\end{definition}
+\begin{definition}
+    如果CFL L没有非二义性文法，则称之为固有二义性的。
+\end{definition}
+\subsection{去无用符号}
+
+\subsubsection{去除无用符号}
+\begin{definition}
+    X是有用符号，即$\exists X \in L(G)$，$S \overset{*} \Rightarrow
+    \alpha X \beta \overset{*} \Rightarrow x$。
+
+    X是有用的，必须同时满足如下两条：
+    \begin{outline}[cenumerate]
+        \1 $S \overset{*} \Rightarrow \alpha X \beta$
+            
+            如何判断？
+
+            \2 $V' = \set{S} \cup \set{A | S \to \alpha A \beta \in P}$
+
+                $T' = \set{a | S \to \alpha a \beta \in P}$
+            \2 重复 \\
+            $V' = V' \cup \set{B | A \to \alpha B \beta \in P \& A in V'}$ \\
+            $T' = T' \cup \set{a | A \to \alpha a \beta \in P \& A in V'}$
+        \1 $X \overset{*} \Rightarrow w, w \in T^*$
+        
+            $G = (V, T, P, S)$，对于：
+
+            $\forall a \in T$，$a$满足2。
+        
+            $\forall A \in V$，如何判断$A$是否满足2？
+            % \begin{outline}[cenumerate]
+                \2 $V' = \set{A | A \to w \in P}$
+                \2 重复 $V' = \set{A | A \to \alpha, \alpha \in (V' \cup T)^*} \cup V'$
+        % \end{outline}
+    \end{outline}
+\end{definition}
+\begin{theorem}
+    对于$\forall$ CFG G，$\exists$ CFG $G'$，
+    \begin{outline}[cenumerate]
+        \1 $L(G') = L(G)$
+        \1 $G'$中无无用符号。
+    \end{outline}
+\end{theorem}
+
+
+\subsubsection{去除$\epsilon-$产生式}
+\begin{definition}
+    如果$A \overset{*} \Rightarrow \epsilon$，则称A为可空变量。
+\end{definition}
+\begin{theorem}
+    对于$\forall$ CFG $G, G'$：
+    \begin{outline}[cenumerate]
+        \1 $G'$中无空产生式
+        \1 $L(G') = L(G) - \set{\epsilon}$
+    \end{outline}
+    对于$A \to x_1x_2\dots x_n$，替换为$A \to y_1y_2\dots y_n$，其中
+    当$x_i$不是可空变量时，$y_i = x_i$，否则$y_i = x_i$或$\epsilon$。
+
+    注意$y_1y_2\dots y_n$不能都为$\epsilon$。
+\end{theorem}
+
+\subsubsection{去单一产生式}
+\begin{definition}
+    形如$A \to B$的产生式是单一产生式。
+\end{definition}
+\begin{definition}
+    对$\forall$ CFG G，$\exists$ CFG $G', L(G') = L(G)$，$G'$中无单一产生式。
+
+    推论：对于$\forall$ CFG $G$, 存在$CFG$ G' 使得$L(G') = L(G)$，且$G'$没有无用符，$\epsilon -$产生式和单一产生式。
+\end{definition}
+
+\subsection{CNF 乔姆斯基范式}
+\begin{definition}
+    如果G的产生式均具有以下形式：
+    
+    $
+    \begin{cases}
+        A \to BC \\
+        A \to a
+    \end{cases}
+    $
+
+    则称之为CNF。
+\end{definition}
+\subsection{GNF 格雷巴赫范式}
+\begin{definition}
+    如果G的产生式均具有以下形式：
+    
+    $
+        A \to a\alpha, \alpha \in V^*
+    $
+
+    则称之为GNF。
+\end{definition}
+
+\begin{example}
+    $A \to Aa | Ab | c | d = \begin{cases}
+        A \to c | d | cB | dB \\
+        B \to a | b | aB | bB
+    \end{cases}$
+\end{example}
+\begin{example}
+    $
+        A \to  A\alpha_1 | A\alpha_2 | A\alpha_3 | \beta_1 | \beta_2 
+        = \begin{cases}
+            A \to \beta_1 | \beta_2 | \beta_1B | \beta_2B \\
+            B \to \alpha_1 | \alpha_2  | \alpha_3 | \alpha_1B | \alpha_2B | \alpha_3B
+        \end{cases}
+    $
+\end{example}
+
+\begin{example}
+    $
+        \begin{cases}
+            S \to ABS | BAA \\
+            A \to BB | BAA \\
+            B \to aB | b
+        \end{cases} = \begin{cases}
+            S \to aBBBS | bBBS | aBAABS | bAABS 
+                    aBAA | bAA\\
+            A \to aBB | bB | aBAA | bAA \\
+            B \to aB | b
+        \end{cases}
+    $
+\end{example}
+
+步骤：
+\begin{outline}[cenumerate]
+    \1 给变量排序
+    \1 从$A_1$到$A_n$逐一使产生式满足如下要求：
+
+    $A_i \to A_h \alpha, j \ge i$
+    \1 从$A_{n-1}$开始通过回代，逐一使$A_{n-1},A_{n-2}\dots$的产生式满足要求
+    \1 通过代入，使第二步中引入的新变量的产生式满足要求。
+
+    关键： \emph{去左递归}
+
+    如：
+
+    $
+    \begin{cases}
+        A \to A\alpha_1 | A\alpha_2 | \dots | A\alpha_n \\
+        A \to \beta_1 | \beta_2 | \dots | \beta_m
+    \end{cases}
+    $
+    为所有A产生式，且$\beta_1, \beta_2, \dots, \beta_m$的首字母不是A，可以用如下的产生式组替代：
+    
+    $
+    \begin{cases}
+        A \to \beta_1 | \beta_2 | \dots | \beta_m | \beta_1 A' | \beta_2 A' | \dots | \beta_, A' \\
+        A' \to \alpha_1 A' | \alpha_2 A' | \dots | \alpha_n A' | \alpha_1 | \alpha_2 | \dots | \alpha_n
+    \end{cases}
+    $
+\end{outline}
+\begin{theorem}
+    对于$\forall$化简了的CFG，$\exists$ GNF 与之等价。
+\end{theorem}
+
+\section{PDA 下推自动机}
+\subsection{PDA的定义}
+\begin{definition}
+    PDA $M = (Q, \Sigma, \Gamma, \delta, q_0, z_0, F)$
+    其中：
+    \begin{description}
+        \item[$Q$]：状态的有穷集合
+        \item[$\Sigma$]： 输入字母表
+        \item[$\Gamma$]： 栈符号的非空有穷集
+        \item[$\delta$]： 状态转义函数\\
+            $Q\times (\Sigma \cup \set{\epsilon}) \times \Gamma \to 2^{Q \times \Gamma^*} $。 
+            
+            $\forall (q,a,A) \in Q\times (\Sigma \cup \set{\epsilon}) \times \Gamma$，
+            $\delta(q,a,A) = \set{(p_1,\gamma_1),\dots,(p_k,r_k)}$表示$M$在状态$q$，栈顶为$A
+            $时读到$a$，将栈顶符号$A$弹出，将$\gamma_i$依次压入栈，并将状态改为$p_i$。
+
+            $\forall (q,A) \in Q\times \Gamma$，
+            $\delta(q,\epsilon,A) = \set{(p_1,\gamma_1),\dots,(p_k,r_k)}$表示$M$在状态$q$，栈顶为$A
+            $时做空移动，将栈顶符号$A$弹出，将$\gamma_i$依次压入栈，并将状态改为$p_i$。
+        \item[$q_0$]：开始状态
+        \item[$z_0 \in \Gamma$]：栈底符号
+        \item[$F$]： 终止状态 
+    \end{description}
+\end{definition}
+
+\begin{definition}
+    PDA M的ID $(q, x, \alpha) = Q \times \Sigma^* \times \Gamma^*$
+
+    其中 $q$ 是M的当前状态， $x$是M的输入带上剩余串，$\alpha$是M的栈中当前的内容。
+
+    设M当前的ID是$(q, ax, A\alpha)$，如果$(p, \gamma) \in \delta(q, a, A)$，则M的ID变为$(p, x, \gamma \alpha)$，记作$(q, ax, A\alpha) \vdash_M (p, x, \gamma\alpha)$。
+
+    如果$(p, \gamma) \in \delta(q, \epsilon, A)$，则M的ID变为$(p, ax, \gamma \alpha)$，记作$(q, ax, A\alpha) \vdash_M (p, ax, \gamma\alpha)$。
+    
+    $\vdash_M$ 是 $Q \times \Sigma^* \times \Gamma^*$上的二元关系。
+\end{definition}
+
+\begin{definition}
+    $M = (Q, \Sigma, \Gamma, \delta, q_0, z_0, F)$
+
+    用终态识别的语言$L(M) = {x | (q_0, x, z_0) \vdash^* (q, \epsilon, \alpha) \text{ and } q \in F}$。
+
+    用空栈识别的语言$N(M) = {x | (q_0, x, z_0) \vdash^* (q, \epsilon, \epsilon) \text{ and } q \in F}$。
+\end{definition}
+
+\end{document}

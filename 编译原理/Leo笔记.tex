@@ -1,0 +1,825 @@
+\documentclass[oneside]{ctexbook}
+\usepackage[T1]{fontenc}
+\usepackage{ctex}
+\usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{caption}
+\usepackage{outlines}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{amsthm}
+\usepackage{tabularray}
+\usepackage{minted}
+\usepackage[colorlinks=false, allcolors=blue]{hyperref}
+\usepackage{cleveref}
+\usepackage{wrapfig}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{amssymb}
+
+\xeCJKsetup{CJKmath=true}
+
+\usetikzlibrary{fit}
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows}
+\usetikzlibrary{positioning}
+\renewcommand{\tableautorefname}{表}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+\DeclarePairedDelimiter{\paren}{(}{)}
+\DeclareMathOperator{\first}{FIRST}
+\DeclareMathOperator{\follow}{FOLLOW}
+\DeclareMathOperator{\firstop}{FIRSTOP}
+\DeclareMathOperator{\lastop}{LASTOP}
+\graphicspath{ {./images/} }
+\UseTblrLibrary{booktabs}
+
+\newtheorem{definition}{定义}[section]
+\newtheorem{example}{例}[section]
+\newtheorem{theorem}{定理}[section]
+\newtheorem{lemma}{引理}[section]
+\crefname{equation}{方程}{方程}
+\crefname{algorithm}{算法}{算法}
+\crefname{lemma}{引理}{引理}
+\crefname{table}{表}{表}
+\crefname{figure}{图}{图}
+\crefname{example}{例}{例}
+\newcounter{fullrefcounter}
+\newcommand*{\fullref}[1]{%
+\addtocounter{fullrefcounter}{1}%
+\label{--ref-\thefullrefcounter}%
+\ifthenelse{\equal{\getpagerefnumber{--ref-\thefullrefcounter}}{\getpagerefnumber{#1}}}
+  {
+    \hyperref[{#1}]{\Cref*{#1} \nameref*{#1}}
+  }
+  {% false case
+    \hyperref[{#1}]{第 \pageref*{#1} 页 \Cref*{#1} \nameref*{#1}}
+  }
+}
+\tikzstyle{arrow} = [-latex',->, to path={-- (\tikztotarget)}]
+\tikzstyle{darrow} = [-latex',->, to path={-- (\tikztotarget)},double]
+\newcommand*{\tto}[0]{\Rightarrow}
+\newcommand*{\ffrom}[0]{\Leftarrow}
+
+\newcommand{\tdiagram}[5][]{
+\begin{scope}[local bounding box={#1},shift={#2}]
+    \draw [thick] (-2, 1) --  (2, 1) -- node[left] {#5} (2, 0) --  (1, 0) -- (1, -1) -- node[above]{#4} (-1, -1) -- (-1, 0) -- (-2, 0) -- node[right]{#3} cycle;
+\end{scope}
+}
+
+
+\title{编译原理课程笔记}
+\author{卢雨轩 19071125}
+% \date{\today}
+\ctexset{
+    paragraph = {
+        runin = false
+    },
+    today = small,
+    figurename = 图,
+    contentsname = 目录,
+    tablename = 表,
+}
+
+\begin{document}
+
+\maketitle
+
+\chapter{绪论}
+
+\section*{主要内容}
+\begin{tblr}{
+  column{1}={preto=\textbullet}
+}
+    编译原理及其设计概述  & 3学时        \\
+    语言与文法 &5学时     \\
+    词法问题   & 6学时   \\
+    语法分析  & 13学时 &自顶向下（LL）；自底向上（LR）； \\
+    语义分析 & 10学时 &\\
+    运行环境 &3学时 & 过程调用，符号管理 \\
+    优化与代码生成 & 2学时 \\
+    总结 \\
+\end{tblr}
+
+\section{计算机语言的发展}
+\begin{outline}
+    \1 机器语言\quad Machine Language
+        \2 二进制代码 \quad Binary Code
+    \1 汇编语言\quad Assemble Language
+        \2 二进制代码与助记符
+        \2 接近计算机硬件指令系统
+    \1 高级语言\quad High Level Language
+        \2 语句定义数据、描述算法
+    \1 命令语言\quad Command
+        \2 功能封装
+    \1 高级语言的分类
+        \2 命令式语言 Imperative Language
+            \3 Fortran, Basic, Pascal, C, COBOL, ALGOL
+        \2 函数式语言 Functional Language
+            \3 LISP, ML
+        \2 逻辑式语言 Logical Language
+            \3 Prolog
+        \2 面向对象语言
+\end{outline}
+\section{翻译系统}
+\begin{outline}
+    \1 翻译程序 -- Translator
+        \2 将某种语言描述的程序（源程序，Source Code）翻译为\emph{等价}的另一种语言描述的程序（目标程序，Object Code）的程序。
+    \1 编译程序 -- Compiler
+        \2 将某一种高级语言描述的程序翻译为汇编、机器语言描述的程序
+    \1 解释程序 -- Interpreter
+    \1 编译系统 = 编译程序 + 运行系统
+    \1 其他翻译程序
+        \2 诊断编译程序
+        \2 优化编译程序
+        \2 交叉编译程序
+        \2 可变目标编译程序
+        \2 并行编译程序
+        \2 汇编程序、交叉汇编程序、反汇编程序
+\end{outline}
+\begin{figure}[htp]
+    \centering
+    \begin{tikzpicture}[node distance=1.5cm]
+        \node (sp) {Source Program};
+        % \node (compiler) [right=1 cm of sp] {Compiler};
+        \node (OP) [below of=sp] {Object Program};
+        \node (RS) [below of=OP] {Run System};
+        \node [right=0 cm of RS]{（支撑环境，运行时库）};
+        \node (input) [left=.4cm of RS] {Input};
+        \node (output) [below of=RS] {Output};
+        \draw [->,double] (sp) -- node[right] {Compiler} (OP);
+        \draw [->,double] (OP) -- (RS);
+        \draw [->] (input) -- (RS);
+        \draw [->,double] (RS) -- (output);
+    \end{tikzpicture}
+    \caption{编译系统 = 编译程序 + 运行系统}
+\end{figure}
+\section{翻译系统的功能分析}
+\begin{outline}
+    \1 分析
+        \2 词法，语法，语义
+    \1 翻译
+        \2 语句的翻译，代码生成
+    \1 例如：标识符左值与右值的绑定
+        \1 变量：存储单元\;\;\qquad 名字：值
+        \1 函数：目标代码序列\; 名字：入口地址
+\end{outline}
+\section{翻译系统的总体结构}
+\subsection{词法分析}
+
+\begin{wrapfigure}[8]{r}{.5\linewidth}
+    \centering
+    \begin{tikzpicture}
+        \node (0) {};
+        \node (lexer) [below=.5cm of 0]{词法分析器 Lexical Analyzer};
+        \node (parser) [below=.5cm of lexer] {语法分析器 Syntax Analyzer};
+        \node (semantic) [below=.5cm of parser] {语义分析 Semantic Analyzer};
+        \node (intermediate) [below = .5cm of semantic] {中间代码生成 Intermediate Code Generate};
+        \node (optimise) [below= .5cm of intermediate] {代码优化器 Optimiser};
+        \node (1) [below=.5cm of optimise] {目标代码生成器 Object Code Generator};
+        \node (2) [below=.5cm of 1] {};
+        \draw [darrow] (0) -- node[right]{源程序} (lexer);
+        \draw [darrow] (lexer) -> node[right]{单词符号} (parser);
+        \draw [darrow] (parser) -> node[right]{语法单元（AST）} (semantic) ;
+        \draw [darrow] (semantic) -> node[right]{语法单元（AST）} (intermediate) ;
+        \draw [darrow] (intermediate) -> node[right]{中间代码} (optimise) ;
+        \draw [darrow] (optimise) -> node[right]{中间代码} (1) ;
+        \draw [darrow] (1) -> node[right]{目标代码} (2) ;   
+
+        
+        \node [draw=black, thick, densely dotted,inner ysep=0,fit=(0) (lexer) (parser) (semantic) (intermediate) (optimise),label=left:{前端},color=purple!70!white] {};
+
+        \node [draw=red!30!black, thick, densely dotted,inner ysep=0,fit=(optimise) (1) (2),label=left:{后端}] {};
+    \end{tikzpicture}
+\end{wrapfigure}
+词法分析器（Lexical Analyzer）完成词法分析。扫描源程序，并转换为Token串，同时查找语法错误，进行标识符登记（管理符号表）。
+
+输入： 字符串。
+
+输出：（种类码，属性值）对。
+
+\subsection{语法分析}
+
+语法分析器（Syntax Analyzer）完成语法分析。实现『组词成句』，构造分析树，指出语法错误并指导翻译。
+
+输入：Token序列
+
+输出：语法成分（抽象语法树）
+
+\subsection{语义分析}
+
+语义分析器（Semantic Analyzer）分析由语法分析器给出的语法单位的语义。
+\begin{outline}
+    \1 获取标识符的属性：类型、作用域等
+    \1 语义检查：运算合法、取值范围
+    \1 子程序的静态绑定：代码的相对地址
+    \1 变量的静态绑定：数据的相对地址
+\end{outline}
+
+\subsection{中间代码生成}
+升层中间代码，如：前、后缀表达式、三地址表示、LLVM IR。
+
+\subsection{代码优化}
+对中间代码的优化处理：提高运行速度、节省储存空间
+\begin{outline}
+    \1 与机器无关的优化
+        \2 常量合并
+        \2 公共子表达式提取等
+    \1 与机器有关的优化
+        \2 循环展开
+        \2 向量化
+        \2 访存优化
+        \2 寄存器排布
+\end{outline}
+
+\subsection{目标代码生成}
+将中间代码转换为目标机器上的指令代码或者汇编代码。
+
+\subsection{表格管理}
+管理编译过程中的各种符号表，辅助完成语法、语义检查，完成静态绑定，管理编译过程。
+
+\subsection{错误处理}
+进行错误的检查、报告以及纠正。
+
+\begin{outline}
+    \1 词法错误：拼写、定义；
+    \1 语法错误：语句结构、表达式结构；
+    \1 语义错误：表达式类型不匹配；
+\end{outline}
+
+\subsection{前端与后端}
+将编译过程分为前端与后端。其中：
+\begin{outline}
+    \1 前端：与源语言有关，与目标机器无关的部分
+        \2 词法分析、语法分析、语义分析、中间代码生成、与机器无关的优化
+    \1 后端：与目标机器有关的部分
+        \2 与机器有关的代码优化、目标代码生成
+\end{outline}
+好处：实现新语言和新机器，只需要实现前端、后端中的某一个。
+
+
+\section{编译程序的生成}
+通过自动化技术来生成编译程序。
+
+\subsection{T形图}
+
+\begin{wrapfigure}[3]{r}{0.3\linewidth}
+    \centering
+    \vspace{-2\baselineskip}
+    \begin{tikzpicture}
+        \tdiagram{(0,0)}{源语言}{表示语言}{目标语言}
+    \end{tikzpicture}
+\end{wrapfigure}
+用T形图表示语言翻译：从源语言翻译为目标语言，而翻译器本身是表示语言。
+
+\subsection{交叉编译（Cross Compiling）、移植}
+\begin{example} \label{example1}
+    A机上有一个C语言编译器，是否可以利用此编译器实现B机器上的C语言编译器？
+\end{example}
+\begin{figure}[t]
+    \centering
+    \begin{tikzpicture}
+        \tdiagram[p0]{(-3, 0)}{C语言}{C语言}{B机器}
+        \node [below=.5cm of p0] {P0\textsubscript{(编写)}};
+        \tdiagram[p1]{(0, -1)}{C语言}{A机器}{A机器}
+        \node [below=.5cm of p1] {P1\textsubscript{(原有)}};
+        \tdiagram[p2]{(3, 0)}{C语言}{A机器}{B机器}
+        \node [below=.5cm of p2] {P2\textsubscript{(生成)}};
+    \end{tikzpicture}
+    \begin{tikzpicture}
+        \tdiagram[p0]{(-3, 0)}{C语言}{C语言}{B机器}
+        \node [below=.5cm of p0] {P0\textsubscript{(编写)}};
+        \tdiagram[p2]{(0, -1)}{C语言}{A机器}{B机器}
+        \node [below=.5cm of p2] {P2\textsubscript{(生成)}};
+        \tdiagram[p3]{(3, 0)}{C语言}{B机器}{B机器}
+        \node [below=.5cm of p3] {P3\textsubscript{(生成)}};
+    \end{tikzpicture}
+    \caption{\protect\fullref{example1} 图例}
+\end{figure}
+\begin{outline}[enumerate]
+    \1  用C语言编制B机器的编译程序P0（C $\rightarrow$ B）
+    \1  用P1编译P0，得到P2
+    \1  用P2编译P0，得到P3
+\end{outline}
+
+\chapter{高级语言及其文法}
+\section{语言概述}
+\begin{outline}
+    \1 什么是语言
+        \2 自然语言（Natural Language）
+            \3 是\emph{人与人}之间的通讯工具
+            \3 语义（Semantics）：环境，背景知识，语气，二义性，难以形式化
+        \2 计算机语言（Computer Language）
+            \3 计算机系统之间、人机之间的通讯工具
+            \3 严格的语法（Grammar）、语义（Semantics）
+                \4 易于形式化，从而实现自动化。
+    \1 语言的描述方法
+        \2 人类『已有』的语言基础
+            \3 自然语言：自然、方便 —— 非形式化
+            \3 数学语言（符号）：严格，准确 —— 形式化
+        \2 机器要『掌握』规则：形式化描述
+            \3 高度抽象 —— 表示（representation）
+            \3 方便计算机表示 —— 有穷描述（finite description）
+            \3 扎实的理论基础 —— 结构（structure）
+    \1 语言 —— 形式化内容的提取
+        \2 字符（Character）：语言中\emph{允许}出现的基本字符
+        \2 单词（Token）：满足一定\emph{规则}的字符串
+        \2 句子（Sentence）：满足一定规则的单词序列
+        \2 语言（Language）：满足一定规则的句子集合
+    \1 \emph{语言是字和组合字的规则 —— 结构性描述}
+    \1 程序设计语言 —— 形式化内容的提取
+        \2 字符（Character）：语言中可出现的所有字符——基本字符集
+        \2 单词（Token）：满足\emph{词法规则}的字符串（RL）
+        \2 语句（Sentence）：满足\emph{语法规则}的单词序列（CFL）
+        \2 程序（Program）：满足\emph{语法规则}的单词序列（CFL）
+        \2 程序设计语言：组成程序的所有语句的集合（CFL）
+    \1 描述形式 —— 文法
+        \2 语法 —— 语句
+            \3 语句的组成规则
+            \3 描述方法：BNF范式（Backus Normal Form，Backus-Naur Form）、语法描述图
+\end{outline}
+\section{基本定义}
+\begin{definition}
+    字母表（Alphabet） $\Sigma$ 是一个非空有穷集合，字母表中的元素称为字母表的一个字母（Letter），也叫字符（Character）
+\end{definition}
+\begin{definition}
+    字母表$\Sigma$上的符号串（String）
+    \begin{outline}[enumerate]
+        \1 $\epsilon$ 是 $\Sigma$ 上的一个符号串（叫做空串）；
+        \1 若$x$是$\Sigma$上的字符串，而$a \in \Sigma$，则$xa$是$\Sigma$上的符号串；
+        \1 $y$是$\Sigma$上的符号串，当且仅当它由 (1) 和 (2) 导出
+    \end{outline}
+
+    非形式化描述：由字母表中的符号组成的任何有穷序列被成为在该字母表上的符号串，也称作『字』（Word）
+\end{definition}
+
+\begin{definition}
+    设 $\Sigma_1,\Sigma_2$ 是两个字母表，$\Sigma_1$ 与 $\Sigma_2$ 的\emph{乘积(Product)} $\Sigma_1 \Sigma_2 = \set{ab | a \in \Sigma_1, b \in \Sigma_2}$
+\end{definition}
+
+\begin{definition}
+    $\Sigma$的幂（Power）：
+    \begin{outline}[enumerate]
+        \1 $\Sigma^0 = \set{\epsilon}$
+        \1 $\Sigma^n = \Sigma^{n-1}\Sigma$ 
+    \end{outline}
+\end{definition}
+
+\begin{definition}
+    $\Sigma$的\emph{正闭包（Positive Closure）}：
+    \begin{outline}[enumerate]
+        \1 $\Sigma^+ = \set{x|x 是 \Sigma 上的非空字符串}$
+        \1 $\Sigma^+ = \Sigma \cup \Sigma^2 \cup \Sigma^3 \cup \dots$
+    \end{outline}
+
+    $\Sigma$的\emph{克林闭包（Kleene Closure）}：
+    
+    $\begin{aligned}
+        \Sigma^* &= \set{\epsilon} \cup \Sigma^+ \\
+                 &= \Sigma^0 \cup \Sigma \cup \Sigma^2 \cup \Sigma^3 \cup \dots
+    \end{aligned}$
+\end{definition}
+
+\begin{definition}
+    设 $\Sigma$ 是一个字母表， $\forall L \subseteq \Sigma^*$，$L$称为字母表$\Sigma$的一个\emph{语言(Language)}，$\forall x \in L$，$x$叫做$L$的一个\emph{句子}。
+\end{definition}
+
+\begin{definition}
+    设$s$是字符串：
+    \begin{outline}
+        \1 \emph{前缀}：移去$s$的尾部的若干（含0）个字符
+        \1 \emph{后缀}：移去$s$的头部的若干（含0）个字符
+        \1 \emph{子串}：从$s$中删去一个前缀和一个后缀
+        \1 \emph{字序列}：从$s$中删去0个或多个符号，\emph{不要求连续}
+        \1 \emph{长度}：符号串中符号的数目
+    \end{outline}
+\end{definition}
+\begin{definition}
+    设$x$和$y$是符号串，他们的\emph{连接（Concatenation）}$xy$是把$y$的符号写在$x$的符号之后得到的符号串
+\end{definition}
+\begin{definition}
+    设$x$是符号串，$x$的$n$次\emph{幂（Power）}为：
+    \begin{outline}
+        \1 $x^0 = \epsilon$
+        \1 $x^n = x^{n-1} x$
+    \end{outline}
+\end{definition}
+\section{文法的定义}
+\emph{如何实现语言结构的形式化描述？}
+
+\begin{definition}
+    文法（Grammar）G是一个四元组
+    $$
+        G = (V, T, P, S)
+    $$
+    其中，
+
+    V —— \emph{变量（Variable）}的非空有穷集。$\forall A \in V$，
+    $A$叫做语法变量（syntactic variable），也叫非终极符号（nonterminal）。
+    
+    T —— \emph{终极符（Terminal）}的非空有穷集。$\forall a \in T$，
+    $a$叫做终极符。 $V \cup T = \emptyset$。
+
+    P —— \emph{产生式（Production）}的非空有穷集。对于$a \to b$，
+    $a$是\emph{左部}，$b$是\emph{右部}。
+
+    S —— $S \in V$，文法G的\emph{开始符号（Start symbol）}。
+\end{definition}
+
+约定：
+\begin{outline}
+    \1 只写产生式，第一个产生式的左部为开始符号
+    \1 对一组有相同左部的产生式 \\
+        $\alpha \to \beta_1, \alpha \to \beta_2, \alpha \to \beta_3, \dots$
+        可以记为 $\alpha \to \beta_1 | \beta_2 | \beta_3 \dots$
+        $\beta_1 , \beta_2 , \beta_3$称为\emph{候选式}（Candidate）
+    \1 形如$\alpha \to \epsilon$的产生式叫做空产生式，也可叫做$\epsilon$产生式
+    \1 符号
+        \2 英文大写字母为\emph{语法变量}
+        \2 英文小写字母为\emph{终结符号}
+        \2 英文较后的大写字母为\emph{语法变量或者终极符号}
+        \2 英文较后的大写字母为\emph{终极符号行}
+        \2 希腊字母表示\emph{语法变量和终极符号组成的行}
+\end{outline}
+
+\begin{definition}
+    对于文法$G = (V, T, P, S)$：
+
+    语法范畴A $L(A) = \set*{w | w \in T^* \text{且} A \overset{*}\Rightarrow w}$
+
+    语言（Language） $L(G) = \set*{w | w \in T^* \text{且} S \overset{*}\Rightarrow w}$
+
+    句子（Sentence） $\forall w \in L(G)$
+
+    句型（Sentential Form） $\forall \alpha \in (V \cup T)^*$， 
+    如果$S \overset{*}\Rightarrow \alpha$，则称$\alpha$是$G$产生的一个句型。
+    
+\end{definition}
+
+\begin{example}
+    定义字母表 $\Sigma = \set{0,1}$ 上的字符串：
+    \begin{outline}
+        \1 $\epsilon$ 是 $\Sigma$ 的一个字符串（叫做空串）
+        \1 若$x$是$\Sigma$上的字符串，而$a$是$\Sigma$的元素，则$xa$是$\Sigma$上的字符串。
+    \end{outline}
+
+    $
+    \begin{aligned}
+        S & \to \epsilon \\
+        S & \to S0 | S1
+    \end{aligned}
+    $
+\end{example}
+
+
+\section{文法的乔姆斯体系}
+\begin{definition}
+    对于文法$G = (V,T,P,S)$： \\
+    G叫做0型文法，Type 0 Grammar，也叫短语结构文法（PSG，Phrase Structure Grammar） \\
+    $L(G)$是0型语言，也叫短结构语言，可递归枚举集。
+\end{definition}
+\begin{definition}
+    对于0型文法文法$G = (V,T,P,S)$： \\
+    如果对于$\forall \alpha \to \beta \in P$，均有$|\beta| \geq |\alpha|$，
+    则G是1型文法，或上下文有关文法。
+\end{definition}
+\begin{definition}
+    对于1型文法文法$G = (V,T,P,S)$： \\
+    如果对于$\forall \alpha \to \beta \in P$，均有$|\beta| \geq |\alpha|$，
+    并且$\alpha \in V$
+    则G是2型文法，或上下文无关文法。
+\end{definition}
+\begin{definition}
+    对于2型文法文法$G = (V,T,P,S)$： \\
+    如果对于$\forall \alpha \to \beta \in P$： \\
+    如果形如$A \to wB$和$A \to w$，其中$A,B \in V, w \in T^+$：G是右线性文法。 \\
+    如果形如$A \to Bw$和$A \to w$，其中$A,B \in V, w \in T^+$：G是左线性文法。 \\
+    则G是3型文法，或正则文法。
+\end{definition}
+
+\section{BNF范式}
+\begin{definition}
+    Backus-Normal：
+    \begin{outline}
+    \1 $\alpha \to \beta$ 表示为 $\alpha ::= \beta$
+    \1 非终极符：用$<>$扩起来
+    \1 终极符：基本符号集
+    \1 其他：
+        \2 $\beta(\alpha_1|\alpha_2|\dots|\alpha_n) = \beta\alpha_1 | \beta\alpha_2 | \dots | \beta\alpha_n$
+        \2 $\set{\alpha_1 | \alpha_2 | \dots | \alpha_n}^u_l$：出现$l$次到$u$次
+        \2 $\set{\alpha_1 | \alpha_2 | \dots | \alpha_n}m$：$l=0, u=m$
+        \2 $[\alpha] = \alpha | \epsilon$
+    \end{outline}
+\end{definition}
+
+\section{CFG的语法树}
+
+\begin{definition}
+    CFG $G=(V, T, P, S)$的语法树为满足如下条件的树：
+
+    \begin{outline}[enumerate]
+        \1 每个节点的标记$x \in V \cup T \cup \set{\epsilon}$
+        \1 如果节点V的标记为$A$，V从左到右的子节点$V_1,V_2,\dots,V_k$
+        的标记依次为$y_1,y_2,\dots,y_k$，则$A \to y_1y_2\dots y_k \in P$
+        \1 根节点标记为S
+        \1 中间节点的标记为变量$x \in V$
+        \1 从左到右的叶子节点$v_1,\dots,v_n$的标记$x_1,\dots,x_n$
+        组成的串$x_1x_2\dots x_n$为该树的结果。
+        \1 如果v的标记为$\epsilon$，则它没有兄弟。
+        % \1 如果节点V的标记为终结符号，则它是叶子节点。
+    \end{outline}
+\end{definition}
+\begin{example}
+    $X \to (S) | S | \epsilon$，请画出句型$((S))$的语法树。
+\end{example}
+\begin{definition}
+    满足语法树定义中除第三条外条件的树，称作A-子树。
+\end{definition}
+\begin{theorem}
+    有一颗结果为$\alpha$的语法树$\iff S \overset{*} \Rightarrow \alpha $
+\end{theorem}
+
+\begin{definition}
+    如果$S \overset{*}\Rightarrow \alpha A \beta$，且$A \overset{+}\Rightarrow \gamma$，则称$\gamma$是句型$\alpha \gamma \beta$相对于变量$A$的短语。
+
+    如果$S \overset{*}\Rightarrow \alpha A \beta$，且$A \Rightarrow \gamma$，则称$\gamma$是句型$\alpha \gamma \beta$相对于变量$A$的直接短语。
+
+    最左直接短语称为『句柄』。
+
+    用树解释短语：
+    \begin{outline}
+        \1 短语：子树的结果是相对于子树根的短语
+        \1 直接短语：只有父子两代的子树的结果
+        \1 句柄：一个句型的分析树中最左的、只有父子两代的子树的结果
+        \1 一个句型的短语数量等于非独子的中间结点数量
+    \end{outline}
+\end{definition}
+
+\chapter{语法分析}
+\section{语法分析的任务}
+\begin{outline}
+    \1 输入：Token序列
+    \1 输出：
+        \2 语法成分以及组成
+        \2 表现形式：语法树
+        \2 错误报告
+    \1 出错处理：
+        \2 定位、续编译
+    \1 自顶向下和自底向上
+        \2 自顶向下：预测分析法（LL（1））
+        \2 自底向上：算符优先分析法 （LR（0），SLR（1），LR（1），LALR（1））
+\end{outline}
+\section{自顶向下的问题与CFG改造}
+\begin{outline}
+\1 自顶向下的分析
+    \2 从文法开始符号出发，寻找每个输入符号串的最左推导
+\1 重要问题：虚假匹配
+    \2 发现不匹配需要回退
+\1 二义性及其消除
+    \2 dangling else问题
+    \2 改造文法，要求最近/最长匹配
+\1 消除左递归
+    \2 将$A \to A\alpha | \beta$转换为$A \to \beta A'; A' \to \alpha A' | \epsilon$
+\end{outline}
+\section{First和Follow集}
+\begin{outline}
+    \1 希望寻找一类文法，可以根据当前输入的符号选择产生式。
+    \1 $A \to \alpha_1 | \alpha_2 | \dots | \alpha_n$：
+        \2 对于 $\forall \alpha \in (V\cup T)^*$：
+        \3 $\first(\alpha) = \set{a | \alpha \overset{*} \tto a\dots, \alpha \in T}$
+        \3 当$\alpha \overset{*} \tto \epsilon$ 时， $\epsilon \in \first(\alpha)$
+        \2 对于 $\forall A \in V$， $A$的后随符号集
+            \3 $FOLLOW(A) = \set{a | S \overset{*} \tto \dots Aa\dots, a \in T}$
+    \1 求$\first(X)$的算法
+\begin{algorithm}[H]
+    \caption{求FIRST(X)}
+    \begin{algorithmic}[1]
+        \label{algo:1}
+        \Procedure{FIRST}{}
+            \For{$X \in V \cup T$}
+                \If{$X \in T$}
+                    \State \textbf{return} $X$
+                \Else
+                    \State $\first(X) \gets \begin{cases}
+                        \set{a | X \to a\dots \in P} & X \to \epsilon \notin P \\
+                        \set{a | X \to a\dots \in P} \cup {\epsilon} & X \to \epsilon \in P
+                    \end{cases}$
+                \EndIf
+            \EndFor
+            \While{$X \in V$, and $\first(X)$ keeps changes}
+                \If{$X \to Y\dots \in P$, $Y \in V$}
+                    \State $\first(X) \gets \first(X) \cup (\first(Y) - \set{\epsilon})$
+                \EndIf
+                \If{$X \to Y_1Y_2\dots Y_n \in P$, $Y_1Y_2\dots Y_{i-1} \overset{*}\tto \epsilon$}
+                    \For{$X \in [1,i]$}
+                        \State $\first(X) \gets \first(X) \cup (\first(Y_i) - \set{\epsilon})$
+                    \EndFor
+                \EndIf
+                \If{$X \to Y_1Y_2\dots Y_n \in P$, $Y_1Y_2\dots Y_{n} \overset{*}\tto \epsilon$}
+                    \State $\first(X) \gets \first(X) \cup \set{\epsilon}$
+                \EndIf
+            \EndWhile
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+    \1 求$\first(\alpha)$的算法
+        \2 设$\alpha = X_1X_2X_3\dots X_n$
+\begin{algorithm}[H]
+    \caption{求FIRST($\alpha$)}
+    \begin{algorithmic}[1]
+        \label{algo:2}
+        \Procedure{FIRST}{}
+            \State $\first(\alpha) \gets \first(X_1) - \set{\epsilon}$
+            \State $k \gets 1$
+            \While {$\epsilon \in \first(X_k),\;k < n$}
+                \State $\first(\alpha) \gets \first(\alpha) \cup (\first(X_{k+1}) - \set{\epsilon})$
+                \State $k \gets k + 1$
+            \EndWhile
+            \If{$k = n,\;\epsilon \in \first(X_n)$}
+                \State $\first(\alpha) \gets \first(\alpha) \cup \set{\epsilon}$
+            \EndIf
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+    \1 求$\follow(A)$的算法
+\begin{algorithm}[H]
+    \caption{求($\follow(A)$)}
+    \begin{algorithmic}[1]
+        \Procedure{FOLLOW}{}
+            \State $\follow(S) \gets \#$
+            \If{$A \to \alpha B \beta$}
+                \State $\follow(A) \gets \follow(A) \cup (\first(B) - \set{\epsilon})$
+            \EndIf
+            \If{$A \to \alpha B or \alpha B \beta, \beta \overset{*}\tto \epsilon$}
+                \State $\follow(B) \gets \follow(B) \cup \follow(A) $
+            \EndIf
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+\end{outline}
+\section{LL(1)文法}
+\begin{outline}
+    \1 对于语法$G$：
+        \2 $\forall A \in V, A \to \alpha_1| \alpha_2| \dots| \alpha_n \in P$
+        \2 $\forall i \ne j: \;\first(\alpha_i) \cap \first(\alpha_j) = \emptyset$
+        \2 当 $\epsilon \in \first(\alpha_j), \follow(A) \cap \first(\alpha_j) = \emptyset$
+        \2 则称他是LL（1）文法
+\end{outline}
+\chapter{自底向上分析}
+\section{自底向上分析}
+\begin{outline}
+    \1 思想：从输入传出发，反复利用产生式归约
+        \2 核心：找到句柄
+    \1 分析器操作：
+        \2 移进：符号入栈
+        \2 归约：用产生式左侧替换栈顶句柄
+        \2 接受：分析成功
+        \2 出错：处理错误
+    \1 问题：
+        \2 移进归约冲突
+        \2 归约归约冲突
+        \2 如何识别句柄的开始与结束？
+    \1 解决方案：
+        \2 优先法
+            \3 根据归约次序为文法符号规定优先级
+            \3 同时归约：同优先级
+            \3 句柄的端点符号要高于句柄外的、相邻的符号的优先级
+            \3 句柄内相邻符号具有相同的优先级。
+        \2 状态法
+            \3 句柄是否形成，取决于产生式的右部是否形成
+            \3 核心：根据句柄形成过程建立状态
+\end{outline}
+\section{算符优先分析法}
+\begin{outline}
+    \1 算符优先关系的定义
+        \2 $+ \lessdot \times$：  + 的优先级低于 $\times$
+        \2 $( \equiv  )$： （的优先级等于）
+        \2 $+ \gtrdot +$： +的优先级高于+
+    \2 方法：将句型中的终结符号当做算符
+\0
+\begin{definition}
+    如果文法$G = (T, V, P, S)$中不存在形如
+    \begin{eqnarray}
+        A \to \alpha BC\beta
+    \end{eqnarray}
+    的产生式，则称之为算符文法（Operator Grammar）
+
+    即：如果文法G中不存在具有\emph{相邻非终结符}的产生式，则成为算符文法。
+\end{definition}
+\begin{definition}
+    对于OG $G = (T, V, P, S)$：
+    \begin{itemize}
+        \item $a \equiv b \iff A \to \dots ab \dots \in P$ 或者 $A \to \dots aBb \dots \in P$
+        \item $a \lessdot b \iff A \to \dots aB \dots \in P$ 且 $B \overset{+} \tto b\dots$ 或者 $B \overset{+} \tto Cb \dots$
+        \item $a \lessdot b \iff A \to \dots Bb \dots \in P$ 且 $B \overset{+} \tto \dots a$ 或者 $B \overset{+} \tto aC \dots$
+    \end{itemize}
+\end{definition}
+\begin{definition}
+    对于OG $G = (T, V, P, S)$：如果$\forall a,b \in T, a \equiv b, a \lessdot b, a \gtrdot b$ 至多有一个成立，则称之为算符优先文法
+\end{definition}
+    \1 优先关系的确定：
+        \2 从定义看
+            \3 $a \lessdot b \iff A \to \dots aB \dots \in P$ 且 $B \overset{+} \tto b\dots$ 或者 $B \overset{+} \tto Cb \dots$
+            \3 需要求出B派生出的 \emph{第一个终结符构成的集合}
+            \3 $a \lessdot b \iff A \to \dots Bb \dots \in P$ 且 $B \overset{+} \tto \dots a$ 或者 $B \overset{+} \tto aC \dots$
+            \3 需要求出B派生出的 \emph{最后一个终结符构成的集合}
+        \2 所以定义：
+            \3 $\firstop(A) = {b | A\overset+ \tto b\dots \text{ or } A \overset+ \tto Bb \dots b, b \in T, B \in N}$
+            \3 $\lastop(A) = {b | A\overset+ \tto \dots b \text{ or }  A \overset+ \tto bB \dots b, b \in T, B \in N}$
+    \1 算法：
+        \2 初值
+            \3 if $A \to a \dots \in P$ or $ A \to Ba \dots \in P$
+                \4 $a \in \firstop(A)$
+            \3 if $A \to \dots a \in P$ or $ A \to  \dots aB \in P$
+                \4 $a \in \lastop(A)$
+        \2 迭代
+            \3 if $A \to B \dots \in P$, $\firstop(A) = \firstop(A) \cup \firstop(B)$
+            \3 if $A \to \dots B  \in P$, $\lastop(A) = \lastop(A) \cup \lastop(B)$
+    \1 算符优先关系的确定
+        \2 如果 $ A \to \dots ab \dots ; A \to \dots aBb \dots$， $a \equiv b$
+        \2 如果 $A \to \dots Bb \dots$，则 $\forall b \in \firstop(B),\; a \lessdot b$
+        \2 如果 $A \to \dots bB \dots$，则 $\forall b \in \lastop(B),\; a \lessdot b$
+    \1 算符优先关系表的构造
+        \2 $A \to X_1X_2\dots X_n$
+            \3 $X_i X_{i+1} \in TT \tto X_i \equiv X_{i+1}$
+            \3 $X_i X_{i+1}X_{i+2} \in TVT \tto X_i \equiv X_{i+2}$
+            \3 $X_i X_{i+1} \in TV \tto \forall a \in \firstop(X_{i+1}), X_i \lessdot a$
+            \3 $X_i X_{i+1} \in VT \tto \forall a \in \lastop(X_{i+1}), X_i \gtrdot a$
+    \1 改进需求：
+        \2 必须是算符优先文法
+        \2 效率低
+        \2 存在查不到的语法错误
+        \2 希望通过文法产生式进行派生或者归约
+\end{outline}
+\section{LR分析法}
+\begin{outline}
+    \1 基本概念 -- 项目
+        \2 LR（0）项目：产生式的右部的某个位置有「.」
+        \2 例如： $S \to X_1X_2\dots X_i . X_{i+1} \dots X_n$
+        \2 $X_i \in T$: 移进项目，表示需要读入$X_i$
+        \2 $X_i \in V$: 待约项目，表示需要归约$X_i$
+        \2 $X_i \dots X_n = \epsilon$: 归约项目，表示句柄已经形成
+
+    
+\end{outline}
+
+
+\chapter{语法制导翻译与属性文法}
+\section{语法制导翻译}
+\begin{outline}
+    \1 语义分析任务
+        \2 语义检查：类型、运算、维数、越界
+        \2 翻译：
+            \3 变量的储存与分配
+            \3 表达式求值
+            \3 语句的翻译
+        \2 目标：
+            \3 生成（等价的）中间代码
+    \1 代码结构
+        \2 变换：源、目标、以及对应关系。
+\end{outline}
+\section{属性文法}
+\begin{outline}
+    \1 接近形式化的语义描述方法
+
+    \begin{tblr}{
+        cell{2-5}{1-2}={mode=math}
+    }
+        \toprule
+        产生式 & 属性、计算规则\\
+        \midrule
+        E \to E_1 + E_2 & E.val \gets E_1.val + E_2.val\\
+        E \to E_1 * E_2 & E.val \gets E_1.val * E_2.val \\
+        E \to (E_1) & E.val \gets E_1.val \\
+        E \to id & E.val \gets id.val \\
+        \bottomrule
+    \end{tblr}
+\0
+\begin{definition}
+    属性文法 $A = (G, V, F)$：
+    \begin{itemize}
+        \item $G$： 上下文无关文法
+        \item $V$： 属性的有穷集合
+        \item $V$： 关于属性的计算规则
+    \end{itemize}
+\end{definition}
+    \1  属性的设定
+        \2 根据文法符号的语义，为文法符号设计语义，用来表示文法符号的语义
+            \3 终结符使用单词的属性
+                \4 name
+                \4 type
+                \4 val
+            \3 语法变量根据实际设置属性
+                \4 表达式：类型、值
+                \4 变量：地址、类型、值
+    \1 属性的分类
+        \2 字面量、标识符：固有属性
+        \2 继承属性：直接继承孩子
+        \2 综合属性：综合多个孩子
+    \1 属性计算
+        \2 
+\end{outline}
+
+
+\end{document}

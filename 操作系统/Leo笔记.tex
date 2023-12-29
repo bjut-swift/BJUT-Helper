@@ -1,0 +1,1021 @@
+% !TEX options = -shell-escape -synctex=1 -interaction=nonstopmode -file-line-error "%DOC%"
+\documentclass{ctexart}
+\usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage[colorlinks=false, allcolors=blue]{hyperref}
+\usepackage{outlines}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{os-common}
+\newcommand{\hl}[1]{\colorbox{yellow}{#1}}
+\renewcommand{\tableautorefname}{表}
+
+\graphicspath{ {./images/} }
+
+\title{OS笔记}
+\author{卢雨轩 19071125}
+% \date{\today}
+\ctexset{
+    section = {
+        titleformat = \raggedright,
+        name = {,},
+        number = 第\chinese{section}部分
+    },
+    paragraph = {
+        runin = false
+    },
+    today = small,
+    figurename = 图,
+    contentsname = 目录,
+    tablename = 表,
+}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\section{操作系统简介}
+
+\subsection{什么是操作系统}
+
+\begin{description}
+    \item[系统观点] 操作系统作为资源管理器。记录、协调各个程序对资源的请求。
+    \begin{outline}
+        \1 硬件资源： 处理器资源、内存、IO设备\dots
+        \1 信息资源： 文件管理、锁\dots
+    \end{outline} 
+    \item[用户观点] 作为机器的拓展。
+\end{description}
+\subsection{操作系统的历史}
+\begin{outline}
+    \1 无操作系统
+    \1 单道批处理系统
+    \1 多道批处理系统
+    \1 分时系统、抢占式调度
+    \1 现代操作系统
+\end{outline}
+
+\subsection{操作系统的基本特征}
+\begin{outline}
+    \1 并发 Concurrence
+    \1 共享 Sharing
+    \1 虚拟 Virtual
+    \1 异步性 Asynchronism
+\end{outline}
+
+\subsection{操作系统的结构}
+\begin{outline}
+    \1 \emph{整体式结构} 如MS-DOS，Unix。是一系列过程的集合，可以互相调用。
+    \1 \emph{层次式结构} 层次式系统的各种功能可以划分为几个层次，每个层次建立在下面的层次之上。 \\
+    优点： 模块化 \\
+    缺点： 对层的定义；相对效率差 \\
+    例子： OS/2
+    \1 \emph{微内核结构} 把部分属于操作系统的功能放到内核的外面，使内核更小，称为微内核。
+        \2 操作系统微内核之外的进程都是服务进程
+        \2 用户进程是客户进程
+        \2 微内核中只提供进程管理、内存管理和通讯功能
+        \2 系统效率较低（信息传递性能损耗）
+    优点：
+        \2 易于维护
+        \2 易于扩充
+
+\end{outline}
+\subsection{操作系统的运行环境}
+\subsubsection{程序状态字}
+程序状态字（Program State Word, PSW）处于CPU，用于包含状态信息。
+\begin{outline}
+    \1 Flags（OF，CR，ZERO，\dots）
+    \1 \emph{指令优先级}
+    \1 \emph{模式（用户、内核）}
+    \1 其他控制位
+\end{outline}
+\subsubsection{双重模式}
+\begin{outline}
+    \1 监督程序模式（Monitor mode, M Mode）：执行OS任务
+        \2 Kernel / System / Privileged/ Supervisor mode
+        \2 内核模式、系统模式、特权模式、管态
+    \1 用户模式（User mode, U mode）：执行用户程序
+        \2 目态
+    \1 区分两种模式的原因：
+        \2 提供保护操作系统和其他用户程序的首段
+        \2 特权指令：可以引起损害的指令
+\end{outline}
+\subsubsection{中断}
+\begin{outline}
+    \1 \emph{现代操作系统是中断驱动的}
+    \1 定义：由外部事件引起的暂停过程。
+    \1 中断与陷阱：
+        \2 中断（Interrupt）指硬中断，如外设、事件
+        \2 陷入（Trap）指软中断
+\end{outline}
+
+\section{进程管理}
+\subsection{进程的概念}
+\subsubsection{什么是进程}
+进程（Process）是一个正在执行的程序，除了程序代码段等之外包括堆栈段。 
+
+\emph{可重入}指能被多个程序同时调用的程序。纯代码，执行过程中不会改变。
+\subsubsection{进程的状态及其转换}
+
+\begin{itemize}
+    \item \emph{两状态进程模型} \par
+    \adjustbox{valign=t}{
+        \begin{minipage}{.5\textwidth}
+            \begin{outline}
+                \1 进程要么正在被处理器执行，要么没有被处理器执行。
+                \1 只有两种状态：
+                    \2 运行状态
+                    \2 非运行状态
+                \1 无法区分等待与就绪
+            \end{outline}
+        \end{minipage}
+    }
+    \adjustbox{valign=t}{
+        \begin{minipage}{.5\textwidth}
+            \begin{center}
+                \includegraphics[width=\textwidth]{images/2-state-process-model.pdf}
+                \captionof{figure}{两状态进程模型}
+            \end{center}
+        \end{minipage}
+    }
+
+    \item \emph{三状态进程模型} \par
+    \adjustbox{valign=t}{
+        \begin{minipage}{.5\textwidth}
+            \begin{outline}
+                \1 三种状态
+                    \2 就绪（Ready）
+                    \2 运行（Running）
+                    \2 等待（Waiting）
+            \end{outline}
+        \end{minipage}
+    }
+    \adjustbox{valign=t}{
+        \begin{minipage}{.5\textwidth}
+            \begin{center}
+                \includegraphics[width=\textwidth]{images/3-state-process-model.pdf}
+                \captionof{figure}{三状态进程模型}
+            \end{center}
+        \end{minipage}
+    }
+    \item \emph{五状态进程模型} \par
+    \adjustbox{valign=t}{
+        \begin{minipage}{.5\textwidth}
+            \begin{outline}
+                \1 五种状态
+                    \2 新（New）： 进程正在被创建
+                    \2 就绪（Ready）
+                    \2 运行（Running）
+                    \2 等待（Waiting）
+                    \2 终止（Stopped）：进程已经停止
+                \1 缺点：如果所有进程都在等待，CPU利用率低
+            \end{outline}
+        \end{minipage}
+    }
+    \adjustbox{valign=t}{
+        \begin{minipage}{.5\textwidth}
+            \begin{center}
+                \includegraphics[width=\textwidth]{images/5-state-process-model.pdf}
+                \captionof{figure}{五状态进程模型}
+            \end{center}
+        \end{minipage}
+    }
+    \item \emph{七状态进程模型} \par
+    \adjustbox{valign=t}{
+        \begin{minipage}{.5\textwidth}
+            \begin{outline}
+                \1 七种状态
+                    \2 新（New）： 进程正在被创建
+                    \2 就绪（Ready）
+                    \2 运行（Running）
+                    \2 等待（Waiting）
+                    \2 终止（Stopped）：进程已经停止
+                    \2 就绪挂起：进程在外存中，等待的事情已经发生
+                    \2 等待挂起：进程在外存中，等待的事情还未发生
+                \1 提高CPU、内存利用率
+                \1 挂起等待中的进程
+            \end{outline}
+        \end{minipage}
+    }
+    \adjustbox{valign=t}{
+        \begin{minipage}{.5\textwidth}
+            \begin{center}
+                \includegraphics[width=\textwidth]{images/7-state-process-model.pdf}
+                \captionof{figure}{七状态进程模型}
+            \end{center}
+        \end{minipage}
+    }
+\end{itemize}
+\subsubsection{进程的实体与特征}
+\begin{outline}
+    \1 \emph{进程实体}
+        \2 程序代码
+        \2 当前的活动
+        \2 数据段（data, bss, etc.）
+        \2 栈
+        \2 堆
+    \1 \emph{进程映像}：进程在内存中的组成
+        \2 进程控制块（PCB, Process Control Block）
+        \2 程序
+        \2 数据
+        \2 堆栈
+    \1 \emph{进程控制块的内容}
+        \2 ID
+            \3 进程ID
+            \3 父进程ID
+            \3 用户ID
+        \2 当前状态
+            \3 寄存器
+            \3 栈指针
+        \2 常规信息（调度信息，IPC信息，FD，\dots）
+\end{outline}
+\subsubsection{进程的调度}
+\begin{outline}
+    \1 \emph{长期调度}
+        \2 从进程池中选择进程进入内存
+            \3 控制内存中进程的数量
+        \2 搭配选择I/O bound和CPU bound程序
+        \2 频率低（几分钟一次），有些系统不用
+    \1 \emph{中期调度}
+        \2 从换出到外存中挂起的进程选择进程进入内存
+    \1 \emph{短期调度}
+        \2 从就绪队列中选择进程到CPU上执行
+        \2 频繁（100ms）
+\end{outline}
+\subsubsection{进程的特点}
+\begin{outline}
+    \1 \emph{动态性}：状态在变化
+    \1 \emph{并发性}：多个进程可以同时运行
+    \1 \emph{独立性}：是独立运行的基本单位
+    \1 \emph{异步性}：可以独立的、以不可知的速度运行
+\end{outline}
+
+\subsection{
+    进程的控制
+}
+\subsubsection{进程的创建}
+\begin{outline}
+    \1 进程\emph{通过系统调用}创建进程，前者称为父进程，后者称为子进程
+        \2 进程树
+    \1 系统调用：
+        \2 fork
+            \3 共享地址空间，Copy On Write
+        \2 execve
+            \3 替代地址空间
+        \2 spawn
+        \2 CreateProcess
+\end{outline}
+\subsubsection{进程终止}
+\begin{outline}
+    \1 进程终止自己 exec 系统调用
+        \2 父进程使用wait
+    \1 父进程终止子进程
+        \2 SIGTERM, SIGKILL
+        \2 TerminateProcess
+    \1 操作系统终止进程
+\end{outline}
+\subsubsection{进程的阻塞与唤醒}
+\begin{outline}
+    \1 \emph{阻塞操作} 阻塞的系统调用（调用资源）
+    \1 \emph{进程唤醒} 等待的事件到来
+\end{outline}
+\subsection{进程间通信（IPC）}
+\begin{outline}
+    \1 \emph{管道通讯}
+        \2 管道是一个环形缓冲区
+        \2 Producer - Consumer Model
+    \1 \emph{共享内存}
+        \2 最快
+        \2 共享一个内存块
+    \1 \emph{消息传递}
+        \2 直接通讯：给指定进程发送消息
+        \2 间接通讯：『邮箱』
+    \1 \emph{同步性问题}： 同步、异步
+\end{outline}
+\subsection{线程}
+\begin{outline}
+    \1 \emph{什么是线程}
+        \2 \emph{线程}是调度的单位
+        \2 \emph{进程}是资源的拥有者
+        \2 \emph{轻量级线程}，是进程内部的一条运行线
+        \2 共享地址空间，拥有线程ID、PC、寄存器和堆栈
+    \1 \emph{线程的优点}
+        \2 响应度高：不会阻塞整个进程
+        \2 资源共享
+        \2 通信简单
+        \2 经济
+    \1 \emph{线程的分类}
+        \2 用户级线程
+        \2 内核级线程
+        \2 混和
+\end{outline}
+\subsection{进程的调度}
+\begin{outline}
+    \1 CPU调度程序
+        \2 称为 Scheduler
+        \2 调度算法
+        \2 分派程序负责把CPU的控制权交给被调度的进程
+    \1 调度原则
+        \2 公平
+        \2 CPU使用率
+        \2 响应时间
+        \2 周转时间
+        \2 等待时间
+        \2 吞吐量
+    \1 先来先服务算法FCFS
+        \2 非抢占，每次选择等待时间最长的进程
+        \2 简单，开销小
+        \2 \hl{对长进程有优势}
+        \2 更利于多CPU处理的进程
+    \1 短作业优先SJF
+        \2 抢占/非抢占
+        \2 非抢占：主动放弃控制权时调度
+        \2 抢占：新到达进程运行时间小于当前进程剩余时间时调度
+            \3 也叫最短剩余时间调度
+        \2 缺点：需要知道作业的时间
+        \2 长进程饥饿
+        \2 非抢占的，不适合在实时系统中实现
+    \1 高响应比优先算法 HRRN
+        \2 响应比 = （A+B）/B
+            \3 A： 等待的时间
+            \3 B： 期望运行的时间
+        \2 非抢占
+        \2 调度响应比高的进程
+        \2 \hl{优点在于考虑等待处理器的时间}
+        \2 需要估计进程执行时间
+    \1 优先级调度算法
+        \2 抢占、非抢占
+        \2 防止饥饿：动态优先级
+    \1 时间片论战算法
+        \2 每隔一段时间产生中断
+        \2 FCFS选择进程执行
+    \1 多级队列调度
+        \2 进程进入系统后分配一个队列
+        \2 队列之间优先级，队列内FCFS
+    \1 多级反馈队列
+        \2 最开始在0队列。执行完一个时间片进入1队列。
+        \2 这样，CPU密集任务会进入低优先级队列
+        \2 最低优先级按照RR
+        \2 缺点：长进程饥饿
+    \1 优化的多级反馈队列：
+        \2 根据优先级分配时间片长度
+        \2 等待一段时间后进入高级别队列
+\end{outline}
+
+\subsection{进程的同步}
+\subsubsection{基础理论}
+\begin{outline}
+    \1 \emph{进程之间的关系}
+        \2 独立的多个进程异步执行，仿佛没有关系
+            \3 \sout{独立进程不影响其他进程，也不被其他进程影响？}
+            \3 \emph{资源有限！}
+        \2 协作的多个进程需要同步
+            \3 进程之间可以相互影响
+            \3 原因：信息共享；加跨计算；模块化；方便
+            \3 例子：Producer-Consumer Model
+    \1 \emph{进程同步问题的提出}
+
+    打印机问题。
+    
+    \1 \emph{竞争条件}
+
+    这种\emph{两个以上的进程共享数据，而最终的执行结果是根据执行次序决定的}，
+    称为\emph{竞争条件(Data Race)}。
+
+    如何解决Data Race？ 控制对资源的访问。
+
+    \1 \emph{临界资源和临界区}
+
+    为了避免竞争条件，必须找到一种方法来阻止多个进程同时读写共享的数据。
+        \2 这种共享的数据称为\emph{临界资源 (Critical Resource)}
+        \2 程序中访问临界资源的部分称为\emph{临界区 (Critical Section)} 
+        \2 \emph{互斥(mutual exclusion)}：
+            \3 如果有进程在临界区中执行，那么其他进程都不能在临界区中执行。
+            \3 可以避免data race的产生。
+        \2 有空让进
+        \2 有限等待
+        \2 不对进程的相对执行速度进行任何假设
+
+    \1 \emph{如何解决临界区互斥的问题？}
+    
+        \2 软件的解决方案（Raft等一致性算法？）
+        \2 硬件的解决方案
+        \2 信号量的解决方案
+        \2 管程的解决方案
+\end{outline}
+
+\subsubsection{硬件方法}
+\begin{outline}
+    \1 \emph{硬件的解决方案之一：关中断}
+
+    \emph{进入临界区之前关中断，离开之后开中断}
+        \2 线代操作系统是中断驱动的，没有了中断操作系统就失去了控制系统的能力
+        \2 只有一个CPU时有效
+
+    \1 \emph{硬件的解决方案之二：原子指令}
+
+    \emph{系统提供了特殊的硬件指令，原子的检查和修改字的内容或者交换两个字。 }
+        \2 TestAndSet \\ IBM370 中称为TS指令
+        \2 Swap \\ 在 Intel8086 中称为XCHG指令
+    
+    \1 \emph{TestAndSet}
+
+    \begin{minted}[linenos]{cpp}
+bool TestAndSet(bool *target){
+    bool value = *target;
+    *target = True;
+    return value;
+}
+.....
+bool lock;
+do {
+    // Try to acquire the lock.
+    // If can't, busy spin.
+    while(TestAndSet(&lock));
+    // Lock acquired.
+    // Do CRITICAL STUFF.
+    lock = False;
+    // Release lock for other process.
+    // Do REMAINING STUFF.
+}
+    \end{minted}
+
+    \1 \emph{Swap}
+    \begin{minted}[linenos]{cpp}
+void Swap(bool *a, bool *b){
+    bool value = *a;
+    *a = *b;
+    *b = value;
+}
+.....
+bool lock;
+do {
+    bool key = True;
+    // Try to acquire the lock.
+    // If can't, busy spin.
+    while(Swap(&lock, &key));
+    // Lock acquired.
+    // Do CRITICAL STUFF.
+    lock = False;
+    // Release lock for other process.
+    // Do REMAINING STUFF.
+}
+    \end{minted}
+    \1 \emph{互斥锁（Mutex Locks）}
+        \2 底层用TestAndSet或者Swap实现
+        \2 acquire()
+        \2 release()
+    \1 软件和硬件解决方案的问题：
+        \2 忙等待（busy waiting）浪费CPU
+            \3 解决方案：让出CPU
+        \2 优先级反转
+            \3 解决方案：优先级捐献
+    \1 信号量方法
+        \2 两个或多个进程可以用信号进行协作
+        \2 进程可以在任何地方停下来等信号
+        \2 信号通过Semaphore特殊变量传递信号
+        \2 Semaphore操作：
+            \3 有一个整形
+            \3 wait（P）用来接受信号
+            \3 signal（V）用来发送信号
+            \3 初值设置为资源数量
+        \2 错误使用：
+            \3 死锁
+            \3 饥饿
+    \1 生产者消费者问题
+        \2 生产者将任务放入缓冲区
+        \2 消费者从缓冲区取出任务
+        \2 缓冲区要互斥
+            \3 否则会出错
+        \2 生产者消费者问题的解决
+        \begin{minted}[linenos]{cpp}
+semaphore n=0; // 防止consumer消费空队列
+semaphore s=1; // 保证put和take操作原子性
+semaphore e=N; // 防止producer写入满队列
+void producer(){
+    while(true){
+        a=produce();
+        wait(e); // 等待“队列中剩余空位数量”
+        wait(s); // 获取队列锁
+        put(a);
+        signal(s); // 释放队列锁
+        signal(n); // 增加“等待处理的任务数量”
+    }
+}
+void consumer(){
+    while(true){
+        wait(n); // 等待“等待处理的任务数量”
+        wait(s); // 获取队列锁
+        a=take();
+        signal(s); // 释放队列锁
+        signal(e); // 增加“队列中剩余空位数量”
+        consume(a);
+    }
+}
+        \end{minted}
+    \1 哲学家进餐问题
+        \2 5个哲学家住在一起，每个人的生活由\emph{吃饭}和\emph{思考}组成
+        \2 桌子上有一盘菜，每人一个盘子一支叉子
+        \2 想吃饭的哲学家会走到桌子变的位置，拿起左右的叉子，从中间的盘子中去菜放到自己的盘子中
+        \2 要求：
+            \3 保证叉子互斥
+            \3 防止死锁和饥饿
+    \1 读者写者问题
+        \2 可以同时读，有人写别人就不能读/写
+        \2 读者优先：
+        \begin{minted}[linenos]{cpp}
+int readcount=0;
+semaphore x=1; // 保证readcount操作原子性
+semaphore wsem=1;
+void reader()
+{
+    while(1){
+        wait(x);
+        readcount++;
+        if(readcount==1)
+            wait(wsem); // 第一个读者锁住锁
+        signal(x);
+
+        READUNIT();
+
+        wait(x);
+        readcount--;
+        if(readcount==0)
+            signal(wsem);
+        signal(x);
+    }
+}
+void writer()
+{
+    while(1)
+    {
+    wait(wsem);
+    WRITEUNIT();
+    signal(wsem);
+    }
+}
+        \end{minted}
+        \2 写者优先：
+        \begin{minted}[linenos]{cpp}
+int readcount=0, writecount=0;
+semaphore x=1, y=1, z=1, wsem=1, rsem=1;
+void reader()
+{
+    while(1){
+        wait(z);
+        wait(rsem);
+        wait(x);
+        readcount++;
+        if(readcount==1)
+            wait(wsem);
+        signal(x);
+        signal(rsem);
+        signal(z);
+        READUNIT();
+        wait(x);
+        readcount--;
+        if(readcount==0)
+            signal(wsem);
+        signal(x);
+    }
+}
+void writer()
+{
+    while(1){
+        wait(y);
+        writecount++;
+        if(writecount==1)
+            wait(rsem);
+        signal(y);
+        wait(wsem);
+        WRITEUNIT();
+        signal(wsem);
+        wait(y);
+        writecount--;
+        if(writecount==0)
+            signal(rsem);
+        signal(y);
+    }
+}
+\end{minted}
+    \1 信号量的问题：
+        \2 操作系统提供
+        \2 有效，灵活
+        \2 容易死锁
+    \1 管程
+        \2 管程用条件变量的方法支持同步。
+        \2 条件变量在管程内部，只能由管程访问。
+        \2 在条件变量C上可以有两种操作:
+\end{outline}
+\subsubsection{死锁}
+\begin{outline}
+    \1 死锁的定义
+        \2  如果一个进程集合中每一个进程都在等待只能由 本集合中的另一个进程才能引发的事件，则称这 种状态为死锁。
+    \1 死锁的条件
+        \2 互斥
+            \3 一个资源同时只让一个进程使用
+        \2拥有并等待
+            \3 进程在拥有一个资源时又申请另一个资源，并等待分配给它。
+        \2 资源不可抢占
+            \3 分配给一个进程的资源是不可抢占的，只能由占有它的进程释放
+        \2 环路等待
+            \3 进程和资源之间存在一个拥有和需求的闭环
+    \1 资源分配图：
+        \2 有环就可能有死锁
+        \2 需要每个资源有一个实例
+    \1 死锁的解决
+        \2 忽略
+        \2 预防死锁
+            \3 \hl{指破除死锁的4个条件之一}
+        \2 避免死锁
+            \3 指仔细检查资源分配
+        \2 死锁的检测和恢复
+    \1 死锁的避免
+    系统能按某种顺序如<P1, P2, …, Pn>为每个进程分配所需资源,
+    直到最大需求, 使每个进程都可顺序完成称系统处于安全状态，此序列称为安全序列
+        \2 安全序列不唯一
+        \2 要求预知进程所有资源。
+            \3 在资源分配过程中, 采用某种策略防止系统进入不安全状态，避免发生死锁
+            \3 若满足一个进程新提出的一项资源请求导致系统不在安全状态拒绝分配资源
+            \3 方法
+                \4 资源分配图算法：每类资源只有一个实例
+                \4 银行家算法
+                    \4 保证处于安全状态
+                    \4 获取新资源时，如果不安全，不分配。
+    \1 死锁的检测与解除
+        \2 中心思想
+            \3死锁的检测方法并不限制对资源的访问
+            \3进程可以在可能的情况下获得它所需要的资源，只是检测死锁是否存在
+            \3如果存在，则想办法恢复
+        \2对于死锁的检测可以在以下两种情况下执行
+            \3在每次进行资源申请而不被满足后进行
+            \3定期检测死锁
+            \begin{algorithm}[H]
+                \caption{死锁的检测}
+                \begin{algorithmic}[1]
+                    \State Initially, all processes are untagged.
+                    \State Tag all processes whose \verb|Allocation| is zero.
+                    \State $w \gets $\verb|Available|
+                    \While{Exists some process whose Request is smaller or equal than $w$}
+                        \State Tag that process.
+                    \EndWhile
+                    \If{There are untagged process}
+                        \State There is dead lock.
+                    \Else
+                        \State There isn't dead lock.
+                    \EndIf
+                \end{algorithmic}
+            \end{algorithm}
+        \2 死锁的恢复
+            \3 终止所有死锁进程
+            \3 一次只终止一个进程直到取消死锁循环为止
+            \3 抢占一个进程的资源，让这个进程回滚到进程占有资源之前的状态
+        
+
+\end{outline}
+
+\section{内存管理}
+\subsection{内存管理概述}
+\subsubsection{分级存储体系}
+内存是计算机系统中的一种十分重要的资源。内存的价格也十分昂贵。
+所以通过分成（L1 cache, L2 cache, \dots, Memory, Disk, NAS）
+
+\subsection{内存管理技术}
+\subsubsection{内存管理相关概念}
+\begin{outline}
+    \1 基本术语
+        \2 内存单元的地址是物理地址
+        \2 符号名是符号地址
+        \2 源程序经编译链接生成可装入程序，从0开始编址，其他地址都相对起始地址计算。此地址称为逻辑地址
+        \2 程序生成的逻辑地址的集合是逻辑地址空间
+        \2 所有物理地址的集合是物理地址空间
+    \1 重定位
+        \2 逻辑地址向物理地址的转换过程就是重定位
+        \2 时机：
+            \3 编译时 \\
+            编译时就知道进程将在内存中驻留的地址，可以直接生成绝对代码。例如，MS-DOS的COM文件
+            \3 加载时 \\
+            编译生成可重定位代码，捆绑/重定位在加载时进行 \\
+            静态重定位
+            \3 执行时 \\
+            若进程在执行时允许移动,则捆绑/重定位在执行时进行 \\
+            动态重定位
+    \1 动态重定位的硬件实现
+        \2 动态重定位是由内存管理单元（MMU）实现
+        \2 设置专门的寄存器
+        \2 基址寄存器（重定位寄存器）和界限寄存器。
+        \2 程序指令地址的重定位在指令执行的时候实现
+    \1 保护
+        \2 保护操作系统不受用户进程的影响
+        \2 保护用户进程不受其它用户进程影响
+        \2 用基地址寄存器（重定位寄存器）和界限器存器
+\end{outline}
+\subsubsection{交换与覆盖}
+\begin{outline}
+    \1 覆盖 \\
+    在任何时候只能在内存中保留所需要的指令和数据。新的指令和数据可覆盖不用的指令和数据
+    \1 交换
+        \2 在内存不足的情况下，需要把一个进程整个换入和换出，称为交换
+        \2 交换空间的分配
+            \3 进程在被换出时分配交换空间 \\
+            每次换到不同的位置
+            \3 进程分配固定的交换空间
+        \end{outline}
+\subsubsection{分区}
+\begin{outline}
+    \1 采用多道程序设计可以提高CPU利用率
+    \1 为了让主存中尽量多地保存进程而不会向互干扰，最简单的方法是将这一部分内存分为有固定边界的区域。
+    \1 把内存分为大小相等的区
+    \1 所需空间小于等于分区大小的进程可以调入可用分区
+    \1 进程换入换出
+        \2  所有的分区都是满的
+        \2 没有进程处于就绪状态或运行状态
+    \1 缺点
+        \2 程序可能太大而不能放入一个分区
+            \3 程序员要设计一种覆盖的方法。
+        \2 主存的应用效率低
+            \3 小程序也要占用整个分区
+        \2 限制了系统中可以激活的进程数目
+\1 位图
+    \1 将内存按一定大小划分成分配单位，每个分配单位对应位图中的一位
+    \1 用0表示空闲，1表示使用（或者反过来）
+    \1 在内存大小确定的情况下，分配单位的大小决定了位图的大小。
+\1 Buddy
+    \1 每次/2，直到恰好能容纳
+    \1 类似二叉树
+\end{outline}
+\subsubsection{分页}
+\begin{outline}
+    \1 通过页表维护
+    \1 页表在内存中
+    \1 通过MMU管理
+        \2 页表寄地址寄存器
+        \2 效率变低：TLB
+    \1 TLB（Translation Lookaside Buffer)
+        \2 缓存页表项
+        \2 现代计算机系统中，TLB和页表的查询可以同时进行。
+        \2 命中率(hit ratio)：可在TLB中找到页码的概率
+        \2 有效访问时间：平均访问到数据的时间
+    \1 单级页表过大，大部分闲置：
+        \2 多级页表，按需分配
+    \1 通过页表的内存保护：
+        \2 可以设置每个页的权限（r/w/x）
+    \1 通过页表共享内存：
+        \2 可重入代码
+    \1 \hl{反向页表}
+        \2 反向页表的每一个页框设置一个表项，并按页框编码排序，表项的内容是页号，及此页所属进程的标识符。
+        \2 虚拟地址到物理地址的转换是用进程标识和页号去查反向页表。
+        \2 \hl{\sout{仅在页表项很少的时候好用？}查询时间固定为物理页框数}
+    \1 优点：
+        \2 碎片小，节省存储器空间
+        \2 分页对程序员是透明的
+    \1 缺点：
+        \2 共享和保护不容易实现
+        \2 程序员不能按照自己的方式组织程序
+    \end{outline}
+\subsubsection{段式内存管理}
+\begin{outline}
+    \1 原理
+        \2 让内存提供多个相互独立的空间，称为段（segment）
+        \2 每个段由0到最大的线性地址构成。
+        \2 不同的段的长度不同，段的长度可以在运行期间改变。
+    \1 分段硬件负责将逻辑地址转换成物理地址
+    \1 优点：
+        \2 共享和保护容易实现
+        \2 程序员可以按照自己的方式组织程序
+    \1 缺点：
+        \2 有碎片，浪费存储器空间
+\end{outline}
+\subsubsection{段页内存管理}
+\begin{outline}
+    \1 原理
+        \2 段页式管理是将用户的地址空间分段，段内按内存页框的大小分页。
+        \2 逻辑地址由段号、段内页号和页内位移三部分组成。
+        \2 操作系统在进行管理时，为每个进程维护一个段表和多个页表。
+        \2 页表的结构与页式管理中的页表一样
+        \2 段表中包含的是页表的起始地址和页表的长度及其它控制位。
+\end{outline}
+\subsection{虚拟内存管理}
+\subsubsection{程序局部性原理}
+\begin{outline}
+    \1 局部性原理
+        \2 1969年P.Denning提出局部性原理
+        \2 在较短时间内
+        \2 程序的执行仅限于某个部分
+        \2 程序所访问的存储空间也局限于某个区域。
+    \1 具体内容
+        \2 大多数情况顺序执行
+        \2 函数调用会限制在调用范围内
+        \2 循环会反复执行
+    \1 结论
+        \2 进程运行前，没必要全部放入内存
+            \3 先放在硬盘上
+            \3 访问的时候，由缺页中断放入内存
+            \3 如果满了，置换
+        \2 从用户的角度看：系统内存容量扩大了
+            \3 称为\hl{虚拟储存器/虚拟内存}
+    \1 虚拟内存
+        \2 指仅把作业的一部分装入内存就可以运行作业的存储系统。
+        \2 它具有请求调入功能和置换功能，是从逻辑上对内存容量进行扩充的一种存储系统。
+\end{outline}
+
+\subsubsection{按需调页}
+\begin{outline}
+    \1 一个进程调入内存时只调入部分页
+        \2 当需要的页面不在内存时，请求调入所需的页面
+        \2 如果内存不足，可以把内存中的某个页面换出到外部辅存中
+        \2 也称\hl{请求页式存储管理}
+    \1 页表
+        \2 Frame ID
+        \2 Present bit
+        \2 Secondary Storage Address
+        \2 Dirty(Changed) bit
+        \2 Accessed bit
+    \1 缺页中断
+        \2 把所需页面放入内存
+        \2 \hl{指令重新执行}
+\end{outline}
+
+\subsubsection{换页算法}
+\begin{outline}
+    \1 最优页面置换算法
+        \2 每个页面都会有该页面下次要被访问之前所要执行的指令数目进行标记。
+        \2 置换算法是淘汰标记最大的页面。
+    \1 FIFO
+        \2 缺点：替代的也可能会很快使用
+    \1 LRU
+\end{outline}
+
+\section{设备管理}
+\subsection{概述}
+\begin{outline}
+    \1 OS为外设提供统一的读写接口
+    \1 用翻译程序将读/写指令翻译成设备指令
+    \1 翻译程序由谁提供？OS？设备生产厂商？
+\end{outline}
+\subsection{I/O硬件}
+\subsubsection{设备分类}
+\begin{outline}
+    \1 块设备
+        \2 每次读取一个块
+        \2 有地址，任意读写
+    \1 字符设备
+        \2 以字符为单位发送或接收字符流
+        \2 不编址，无法寻址
+\end{outline}
+\subsubsection{I/O设备的组成}
+\begin{outline}
+    \1 设备控制器
+        \2 操作系统只和设备控制器打交道
+        \2 功能：
+            \3 设备控制器用几个寄存器与CPU通讯
+            \3 CPU通过读控制寄存器中的一个或多个字节的信息，得到操作结果和设备状态。
+            \3 CPU给设备控制器发送请求来进行I/O。
+            \3 请求后，控制器进行I/O之后，给cpu发中断
+    \1 机械部分
+\end{outline}
+\subsection{I/O软件}
+\subsubsection{I/O软件的目标}
+\begin{outline}
+    \1 实现设备独立性
+        \2 应用设备使用抽象的逻辑设备
+        \2 由操作系统对抽象的逻辑设备映射到具体的物理设备
+        \3 设备名称应该是简单字符串/整数
+\end{outline}
+\subsubsection{I/O控制方式的演变}
+\begin{outline}
+    \1 轮询（polling）
+        \2 busy-waiting
+    \1 中断驱动
+        \2 异步
+    \1 DMA
+        \2 直接放入内存
+\end{outline}
+\subsubsection{I/O软件的层次}
+\begin{outline}
+    \1 中断处理程序
+    \1 设备驱动程序
+    \1 设备独立性软件
+    \1 用户空间的I/O软件
+\end{outline}
+\section{文件管理}
+\subsection{文件的基础概念}
+\subsubsection{文件与文件系统}
+\begin{outline}
+    \1 文件系统
+        \2 处理文件的操作系统的部分称为文件系统
+        \2 是操作系统中对用户最可见的部分
+        \2 对文件的操作，分配存储空间，及相应的保护机制
+    \1 文件的概念
+        \2 是记录在外存上的具有名字的相关信息的集合
+        \2 文件：是具有名字的一组相关记录的集合。
+        \2 记录：是相关域的集合。记录也可以是定长的，也可以是变长的。
+        \2 域：是数据的基本单位。有自己的长度和数据类型。在不同的文件系统中，域可以是定长的，也可以是变长的。
+        \2 文件是一个单独的实体，也可以创建和删除。对于访问的控制和限制通常是文件级的。
+    \1 文件属性
+        \2 文件名
+        \2 标识符：文件系统内部的唯一标识，通常是数字
+        \2 类型：被支持不同类型的操作系统使用
+        \2 位置：设备、区域
+        \2 大小
+        \2 保护：文件的访问权限
+        \2 时间和日期和用户标识
+\end{outline}
+\subsubsection{文件的分类}
+\begin{outline}
+    \1 普通文件
+    \1 目录文件
+    \1 特殊文件（设备文件）
+\end{outline}
+\subsubsection{文件的逻辑结构}
+\begin{outline}
+    \1 有结构文件
+        \2 顺序文件
+        \2 索引文件
+        \2 顺序索引文件
+        \2 类似结构化数据库
+    \1 无结构文件
+        \2 流式文件，通过指针访问
+\end{outline}
+\subsubsection{文件的物理结构}
+\begin{outline}
+    \1 连续分配
+        \2 无法改变大小
+        \2 外部碎片
+    \1 链表分配
+        \2 动态分配，没有外部碎片
+        \2 数据分散，读文件慢
+        \2 \hl{合并}
+    \1 索引分配
+        \2 inode中存索引
+        \2 实现：内存表或inode
+        \2 内存表
+            \3 以块号为索引
+            \3 存下一个块的地址
+        \2 inode
+            \3 直接块
+            \3 一级间接块
+            \3 二级间接块
+            \3 三级间接块
+\end{outline}
+\subsubsection{文件存取方式}
+\begin{outline}
+    \1 顺序存取
+    \1 随机存取
+\end{outline}
+\subsection{文件目录}
+\subsubsection{基本概念}
+\begin{outline}
+    \1 文件控制块（FCB）
+        \2 是一个数据结构
+        \2 包含了文件名和各种属性
+    \1 文件目录
+        \2 是文件控制块的有序集合
+        \2 在打开文件时：
+            \3 查找目录文件找到要打开文件的文件名从目录项中得到文件的属性和磁盘地址
+\end{outline}
+\subsubsection{目录结构}
+\begin{outline}
+    \1 单级目录系统
+        \2 整个系统中有一张目录表
+        \2 每个文件拥有一个目录项（FCB）
+    \1 两级目录系统
+        \2 每个用户一个目录
+    \1 树形目录系统
+        \2 从根目录到任何文件之间只有一条唯一的通路
+            \3 绝对路径名：从根目录开始，把这条通路上所有的目录名和文件名顺序写出，中间用/分隔
+            \3 工作目录：用户可以设定一个目录为工作目录，这时，所有的路径名都是从工作目录开始的
+            \3 相对路径名：从工作目录开始，而不是从根目录开始的路径名
+        \2 两个特殊的目录项
+            \3 “.”指当前目录，“..”指父目录
+\end{outline}
+\subsection{外存文件管理}
+\begin{outline}
+    \1 bitmap
+        \2 使用一个位表示磁盘块的分配状态。
+            \3 0：磁盘块未分配
+            \3 1：磁盘块已分配
+    \1 链表
+        \2 在块中存下一个空闲块的地址
+    \1 成组链接法
+        \2 每个节点存：
+            \3 块数量：除了第一个都是100，第一个块的第一个地方存0，表示结束，是99个
+            \3 100 ~ 99 个 块地址
+            \3 第1个表示下一个块的地址
+            \3 用栈维护少于100的空闲块
+    \1 可靠性，安全性
+    \1 访问控制
+        \2 ACL
+        \3 为每个文件或者目录增加一个ACL，给定文件或者目录的允许访问用户名和访问类性
+        \3 用户太多：把用户分成拥有者、组和其它3类
+        \2 CCL
+            \3 每个用户存一个 所有文件的表
+
+
+
+\end{outline}
+\end{document}
