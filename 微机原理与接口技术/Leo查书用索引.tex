@@ -1,0 +1,716 @@
+\documentclass[zihao=5,linespread=1,heading=false,autoindent=0pt]{ctexart}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,top=1cm,bottom=1cm,left=1cm,right=1cm,marginparwidth=1.75cm]{geometry}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{outlines}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{amsthm}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{wrapfig}
+\usepackage{cancel}
+\usepackage{multicol}
+\usepackage{bm}
+% \usepackage{breqn}
+\usepackage[colorlinks=false, allcolors=blue]{hyperref}
+% \usepackage{unicode-math}
+% \setmathfont{texgyrepagella-math.otf}
+\renewcommand{\tableautorefname}{表}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+\DeclarePairedDelimiter{\paren}{(}{)}
+\graphicspath{ {./images/} }
+
+\makeatletter
+\DeclareRobustCommand{\em}{%
+  \@nomath\em \if b\expandafter\@car\f@series\@nil
+  \normalfont \else \heiti\bfseries \fi}
+\makeatother
+
+\usetikzlibrary{automata,positioning}
+\newcommand{\hl}[1]{\colorbox{yellow}{#1}}
+\newcommand{\tto}{\Rightarrow}
+\pagestyle{empty}
+\newenvironment{citemize}%
+{\begin{itemize}[parsep=0pt,itemsep=0pt,topsep=0pt,partopsep=0pt,labelwidth=1em,leftmargin=*]}
+{\end{itemize}}
+\newenvironment{cenumerate}%
+{\begin{enumerate}[parsep=0pt,itemsep=0pt,topsep=0pt,partopsep=0pt,labelwidth=1em,leftmargin=*]}
+{\end{enumerate}}
+\linespread{1}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\baselineskip}{0pt}
+\setlength{\abovedisplayskip}{0pt}
+\setlength{\belowdisplayskip}{0pt}
+\setlength{\abovedisplayshortskip}{0pt}
+\setlength{\belowdisplayshortskip}{0pt}
+\titlespacing*{\section}{0pt}{0pt}{0pt}
+\titlespacing*{\subsection}{0pt}{0pt}{0pt}
+\titlespacing*{\subsubsection}{0pt}{0pt}{0pt}
+\titlespacing*{\paragraph}{0pt}{0pt}{0pt}
+
+\setlength{\multicolsep}{0.0pt}% 50% of original values
+\setlength{\floatsep}{0pt plus 2pt minus 2pt}
+\setlength{\textfloatsep}{0pt plus 2pt minus 2pt}
+\setlength{\intextsep}{0pt plus 2pt minus 2pt}
+\setlength{\medskipamount}{2pt}
+
+\newcommand{\HRule}[1][\medskipamount]{\par
+  \vspace*{\dimexpr-\parskip-\baselineskip+#1}
+  \noindent\rule{\linewidth}{0.2mm}\par
+  \vspace*{\dimexpr-\parskip-.5\baselineskip+#1}}
+
+\newcommand{\includedrawio}[2][]{
+    \immediate\write18{echo open -a /Applications/draw.io.app --args `pwd`/#2 --crop -x -o `pwd`/#2.pdf 2>&1 > t.out}
+    % \immediate\write18{/Applications/draw.io.app/Contents/MacOS/draw.io #2 --crop -x -o #2.pdf}
+    \includegraphics[#1]{#2.pdf}
+}
+
+\ctexset{
+    section = {
+        % titleformat = \raggedright,
+        runin = true,
+        format += \small,
+        name = {,},
+    },
+    subsection/format += \small,
+    subsubsection/format += \small,
+    paragraph = {
+        runin = false
+    },
+    today = small,
+    figurename = 图,
+    contentsname = 目录,
+    tablename = 表,
+}
+
+\newtheoremstyle{exampstyle}
+  {0pt} % Space above
+  {0pt} % Space below
+  {} % Body font
+  {} % Indent amount
+  {\bfseries} % Theorem head font
+  {} % Punctuation after theorem head
+  {2ex} % Space after theorem head
+  {} % Theorem head spec (can be left empty, meaning `normal')
+
+\theoremstyle{exampstyle} \newtheorem{definition}{定义}[section]
+\theoremstyle{exampstyle} \newtheorem{example}{例}[section]
+\theoremstyle{exampstyle} \newtheorem{theorem}{定理}[section]
+\theoremstyle{exampstyle} \newtheorem{lemma}{引理}[section]
+\theoremstyle{exampstyle} \newtheorem{myproof}{证明}[section]
+
+\begin{document}
+
+\begin{multicols*}{3}
+\small
+\paragraph{ PPT1(1.X) 微型计算机概述}
+\begin{citemize}
+     
+    \item
+      \textbf{1.1 微型计算机的特点和发展 1-14}
+    \item
+      \textbf{1.2 微型计算机的分类 1-17}
+    
+      \begin{citemize}
+       
+      \item
+        1、按规模分类 1-17
+      \item
+        2、按微处理器的字长分类 1-18
+      \end{citemize}
+    \item
+      \textbf{1.3 微处理器、微型计算机和微型计算机系统 1-19}
+    
+      \begin{citemize}
+       
+      \item
+        1.3.1 微处理器CPU 1-20
+      \item
+        1.3.2 微型计算机 1-22
+    
+        \begin{citemize}
+         
+        \item
+          微处理器 1-22
+        \item
+          存储器 1-22
+        \item
+          输入/输出接口电路 1-22
+        \item
+          系统总线 1-23
+        \item
+          数据总线、地址总线和控制总线 1-24
+        \end{citemize}
+      \item
+        1.3.3 微型计算机系统 1-25
+      \end{citemize}
+    \item
+      \textbf{1.4 微型计算机的应用 1-26}
+    \end{citemize}
+    
+    \paragraph{PPT2(2.X)
+    16位和32位微处理器}
+    
+    \begin{citemize}
+     
+    \item
+      \textbf{2.1 16位微处理器8086 2-3}
+    
+      \begin{citemize}
+       
+      \item
+        2.1.1 8086的编程结构 2-3
+    
+        \begin{citemize}
+         
+        \item
+          总线接口部件BIU 2-5
+        \item
+          指令执行部件EU 2-7
+        \item
+          状态标志 2-10
+        \item
+          控制标志 2-11
+        \item
+          8086的总线周期的概念 2-13
+    
+          \begin{citemize}
+           
+          \item
+            时钟周期、总线周期、指令周期 2-13
+          \end{citemize}
+        \end{citemize}
+      \item
+        2.1.2 8086的引脚信号和工作模式 2-16
+    
+        \begin{citemize}
+         
+        \item
+          最小模式和最大模式的概念 2-16
+        \item
+          8086引脚信号和功能 2-17
+    
+          \begin{citemize}
+           
+          \item
+            两种工作方式功能相同的引脚 2-19
+          \item
+            工作于最小模式下时使用的引脚 2-25
+          \end{citemize}
+        \item
+          8086/8088 CPU在最小模式典型配置 2-28
+    
+          \begin{citemize}
+           
+          \item
+            地址锁存器8282 2-30
+          \item
+            8286双向数据总线收发器 2-32
+          \item
+            时钟发生器8284A 2-35
+          \end{citemize}
+        \item
+          8086/8088 CPU在最大模式中引脚定义 2-42
+    
+          \begin{citemize}
+           
+          \item
+            最大工作模式特点 2-42
+          \item
+            引脚定义 2-42
+          \item
+            最大模式下的典型配置 2-46
+          \item
+            总线控制器8288 2-47
+          \item
+            总线控制器8288的连接 2-48
+          \end{citemize}
+        \end{citemize}
+      \item
+        2.1.3 8086的操作和时序 2-49
+    
+        \begin{citemize}
+         
+        \item
+          系统的复位和启动操作 2-50
+        \item
+          总线操作 2-51
+    
+          \begin{citemize}
+           
+          \item
+            总线读周期 2-51
+          \item
+            总线写周期 2-52
+          \item
+            总线空操作 2-53
+          \end{citemize}
+        \item
+          8086的中断响应时序 2-54
+        \item
+          最小模式下的总线保持 2-55
+        \item
+          最大模式下的总线请求/授权 2-56
+        \end{citemize}
+      \item
+        2.1.4 8086存储器编址和I/O编址 2-57
+    
+        \begin{citemize}
+         
+        \item
+          8086的存储器编址 2-57
+    
+          \begin{citemize}
+           
+          \item
+            逻辑地址和物理地址 2-58
+          \item
+            合成物理地址 2-60
+          \end{citemize}
+        \item
+          8086的I/O编址 2-62
+    
+          \begin{citemize}
+           
+          \item
+            和存储器统一编址 2-62
+          \item
+            I/O独立编址 2-64
+          \end{citemize}
+        \end{citemize}
+      \end{citemize}
+    \item
+      \textbf{2.6 80x86微处理器及其发展 2-66}
+    
+      \begin{citemize}
+       
+      \item
+        2.6.1 80286微处理器 2-66
+      \item
+        2.6.2 80386微处理器 2-69
+      \item
+        2.6.3 80486微处理器 2-72
+      \item
+        2.6.4 Pentium微处理器 2-74
+      \end{citemize}
+    \end{citemize}
+    
+    \hypertarget{ppt35.x-ux5faeux578bux8ba1ux7b97ux673aux548cux5916ux8bbeux7684ux6570ux636eux4f20ux8f93}{%
+    \paragraph{PPT3(5.X)
+    微型计算机和外设的数据传输}\label{ppt35.x-ux5faeux578bux8ba1ux7b97ux673aux548cux5916ux8bbeux7684ux6570ux636eux4f20ux8f93}}
+    
+    \begin{citemize}
+     
+    \item
+      \textbf{5.1 为什么要用接口 3-3}
+    \item
+      \textbf{5.2 CPU和输入/输出设备之间的信号 3-5}
+    
+      \begin{citemize}
+       
+      \item
+        5.2.1 数据信息 3-5
+      \item
+        5.2.2状态信息 3-5
+      \item
+        5.2.3 控制信息 3-5
+      \end{citemize}
+    \item
+      \textbf{5.3 接口部件的I/O端口 3-6}
+    \item
+      \textbf{5.4 接口的功能以及在系统中的连接 3-8}
+    
+      \begin{citemize}
+       
+      \item
+        5.4.1 接口的功能 3-8
+    
+        \begin{citemize}
+         
+        \item
+          接口组成：硬件电路和软件编程 3-10
+        \end{citemize}
+      \item
+        5.4.2 接口与系统的连接 3-11
+    
+        \begin{citemize}
+         
+        \item
+          典型的I/O部件和外部电路连接图 3-11
+        \end{citemize}
+      \end{citemize}
+    \item
+      \textbf{5 .5 CPU与外设之间的数据传输方式 3-14}
+    
+      \begin{citemize}
+       
+      \item
+        5.5.1程序控制方式 3-14
+    
+        \begin{citemize}
+         
+        \item
+          无条件传送 3-14
+        \item
+          条件传送 3-17
+        \item
+          查询式输出的接口电路 3-19
+        \item
+          查询式输入的流程图 3-20
+        \item
+          查询式输出过程的流程图 3-21
+        \end{citemize}
+      \item
+        5.5.2 中断方式 3-22
+    
+        \begin{citemize}
+         
+        \item
+          中断传送方式的原理 3-22
+        \item
+          中断优先级问题的解决 3-25
+        \end{citemize}
+      \item
+        5 .5 .3 DMA方式 3-26
+    
+        \begin{citemize}
+         
+        \item
+          DMA传送方式的提出 3-26
+        \item
+          DMA控制器的功能和DMA传送原理 3-27
+        \item
+          DMA控制器的内部最小配置和接口要求 3-28
+        \item
+          对DMA传送对I/O接口的要求 3-30
+        \item
+          对DMA控制器的要求 3-30
+        \item
+          系统对DMA控制器和接口部件预置信息 3-31
+        \item
+          启动数据块输入的程序段 3-32
+        \item
+          DMA控制器的工作特点 3-33
+        \end{citemize}
+      \item
+        5.5.4 输入输出过程中提出的几个问题 3-34
+      \item
+        5.5.5 接口和多字节数据总线的连接 3-35
+      \item
+        5.5.6接口部件和地址总线的错位连接 3-36
+      \end{citemize}
+    \end{citemize}
+    
+    \hypertarget{ppt47.x-ux4e2dux65adux63a7ux5236ux5668}{%
+    \paragraph{PPT4(7.X)
+    中断控制器}\label{ppt47.x-ux4e2dux65adux63a7ux5236ux5668}}
+    
+    \begin{citemize}
+     
+    \item
+      \textbf{7-0 中断与8086中断系统 4-3}
+    
+      \begin{citemize}
+       
+      \item
+        中断的基本概念 4-3
+    
+        \begin{citemize}
+         
+        \item
+          中断 4-3
+        \item
+          中断的特点 4-4
+        \item
+          中断的功能 4-4
+        \end{citemize}
+      \item
+        中断类型和中断向量表 4-6
+      \item
+        8086的中断分类 4-8
+      \item
+        中断响应过程 4-10
+      \end{citemize}
+    \end{citemize}
+    
+    \hypertarget{ppt56.x-ux4e32ux5e76ux884cux901aux4fe1ux548cux63a5ux53e3ux6280ux672f}{%
+    \paragraph{PPT5(6.X)
+    串并行通信和接口技术}\label{ppt56.x-ux4e32ux5e76ux884cux901aux4fe1ux548cux63a5ux53e3ux6280ux672f}}
+    
+    \begin{citemize}
+     
+    \item
+      \textbf{6.1 串行接口和串行通信 5-3}
+    
+      \begin{citemize}
+       
+      \item
+        6.1.1串行通信涉及的几个问题 5-3
+    
+        \begin{citemize}
+         
+        \item
+          全双工、半双工和单工 5-3
+        \item
+          同步方式和异步方式 5-3
+        \item
+          串行通信的传输率 5-5
+    
+          \begin{citemize}
+           
+          \item
+            波特率因子 5-6
+          \item
+            串行接口芯片 5-7
+          \end{citemize}
+        \end{citemize}
+      \item
+        6.1.2 串行接口 5-8
+    
+        \begin{citemize}
+         
+        \item
+          可编程串行接口的典型结构 5-8
+        \item
+          串行接口部件4个主要寄存器 5-9
+        \end{citemize}
+      \end{citemize}
+    \item
+      \textbf{6.3 并行通信和并行接口 5-39}
+    \end{citemize}
+    
+    \hypertarget{ppt69.x-ux8ba1ux6570ux5668ux5b9aux65f6ux5668ux63a5ux53e3ux82afux7247}{%
+    \paragraph{PPT6(9.X)
+    计数器/定时器接口芯片}\label{ppt69.x-ux8ba1ux6570ux5668ux5b9aux65f6ux5668ux63a5ux53e3ux82afux7247}}
+    
+    \begin{citemize}
+     
+    \item
+      \textbf{9 计数器/定时器和多功能接口芯片 6-3}
+    
+      \begin{citemize}
+       
+      \item
+        在微型计算机系统中经常用到定时信号 6-3
+      \item
+        实现定时的方法：软件和硬件两种 6-3
+    
+        \begin{citemize}
+         
+        \item
+          软件定时 6-3
+        \item
+          硬件定时 6-4
+        \end{citemize}
+      \item
+        9.1 可编程计数器/定时器的工作原理 6-5
+    
+        \begin{citemize}
+         
+        \item
+          计数器/定时器的一些用处 6-6
+        \item
+          典型计数器/定时器原理图 6-7
+        \end{citemize}
+      \end{citemize}
+    \end{citemize}
+    
+    \hypertarget{ppt78.x-dmaux63a7ux5236ux5668}{%
+    \paragraph{PPT7(8.X) DMA控制器}\label{ppt78.x-dmaux63a7ux5236ux5668}}
+    
+    \begin{citemize}
+     
+    \item
+      \textbf{8.1 DMA控制器概要 7-3}
+    
+      \begin{citemize}
+       
+      \item
+        DMA控制器的传输过程 704
+      \end{citemize}
+    \end{citemize}
+    
+    \hypertarget{ppt810.x-ux6a21ux6570ux548cux6570ux8f6cux6362}{%
+    \paragraph{PPT8(10.X)
+    模/数和数/转换}\label{ppt810.x-ux6a21ux6570ux548cux6570ux8f6cux6362}}
+    
+    \begin{citemize}
+    \item
+      \textbf{10.1 概述 8-3}
+    
+      \begin{citemize}
+       
+      \item
+        闭环实时控制系统 8-4
+      \end{citemize}
+    \item
+      \textbf{10.2 数/模（D/A）转换器 8-5}
+    
+      \begin{citemize}
+      \item
+        10.2.1 D/A转换的原理 8-5
+    
+        \begin{citemize}
+         
+        \item
+          运算放大器的工作特点和原理 8-6
+        \item
+          由并联电阻和运算放大器构成的 D/A转换器 8-8
+        \item
+          T型权电阻网络 8-9
+        \end{citemize}
+      \item
+        10.2.2 D/A转换的指标 8-11
+    
+        \begin{citemize}
+        \item
+          分辨率、转换精度、转换速率和建立时间、
+    
+          线性误差、输出电平范围
+        \end{citemize}
+      \end{citemize}
+    \item
+      \textbf{10.3 模/数转换器 8-34}
+    
+      \begin{citemize}
+       
+      \item
+        10.3.1 A/D转换涉及的参数 8-34
+    
+        \begin{citemize}
+         
+        \item
+          分辨率、转换精度、转换率
+        \end{citemize}
+      \item
+        10.3.2 A/D转换的方法和原理 8-35
+    
+        \begin{citemize}
+         
+        \item
+          计数式A/D转换 8-35
+        \item
+          双积分式A/D转换（不讲）8-37
+        \item
+          逐次逼近式A/D转换 8-40
+        \item
+          用软件和D/A转换器来实现A/D转换 8-42
+        \end{citemize}
+      \item
+        10.3.3 A/D转换器和系统连接时要考虑的问题 8-45
+    
+        \begin{citemize}
+         
+        \item
+          输入模拟电压的连接 8-45
+        \item
+          数据输出线和系统总线的连接 8-45
+        \item
+          启动信号的供给 8-46
+        \item
+          转换结束信号以及转换数据的读取 8-46
+        \item
+          模拟电路和数字电路的接地问题 8-47
+        \end{citemize}
+      \end{citemize}
+    \end{citemize}
+    
+    \hypertarget{ppt915.x-ux603bux7ebf-ux7406ux8bbaux4e0aux4e0dux8003}{%
+    \paragraph{PPT9(15.X) 总线
+    （理论上不考）}\label{ppt915.x-ux603bux7ebf-ux7406ux8bbaux4e0aux4e0dux8003}}
+    
+    \begin{citemize}
+    \item
+      总线结构优点 9-3
+    \item
+      15.1 总线的分类和性能指标 9-4
+    
+      \begin{citemize}
+       
+      \item
+        计算机总线的分类 9-4
+    
+        \begin{citemize}
+         
+        \item
+          内部总线 9-4
+        \item
+          局部总线 9-4
+        \item
+          系统总线 9-5
+        \item
+          外部总线 9-5
+        \end{citemize}
+      \item
+        总线的性能指标 9-6
+    
+        \begin{citemize}
+         
+        \item
+          宽度、总线频率、传输率
+        \end{citemize}
+      \item
+        多总线技术 9-6
+      \item
+        总线的层次 9-7
+      \item
+        总线桥 9-8
+      \item
+        基于PC/XT总线的微机的基本结构 9-9
+      \item
+        基于ISA总线的微机的基本结构 9-10
+      \item
+        基于PCI总线的微机的基本结构 9-11
+      \end{citemize}
+    \item
+      15.2 PCI总线的特点和系统结构 9-12
+    
+      \begin{citemize}
+       
+      \item
+        15.2.1 PCI的概况和特点 9-12
+    
+        \begin{citemize}
+         
+        \item
+          PCI的概况 9-12
+        \item
+          PCI的特点 9-12
+        \end{citemize}
+      \item
+        15.2.2 PCI的层次化系统结构 9-14
+      \end{citemize}
+    \item
+      15.11 PCI兼容的局部总线 9-15
+    
+      \begin{citemize}
+      \item
+        15.11.1 局部总线ISA 9-15
+    
+        \begin{citemize}
+        \item
+          16位数据线、地址线、控制线、
+    
+          状态线、辅助线和电源线
+        \end{citemize}
+      \end{citemize}
+    \item
+      15.12.4 通用串行总线USB 9-26
+    
+      \begin{citemize}
+       
+      \item
+        USB的特点 9-27
+      \item
+        USB的接口特性 9-28
+      \end{citemize}
+    \end{citemize}
+\end{multicols*}
+
+\end{document}
