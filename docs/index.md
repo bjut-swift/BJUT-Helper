@@ -37,7 +37,7 @@ Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！
 
 如果有对于课程的评价可写在对应课程文件夹的 README.md 中。
 
-提交的内容推荐为 PDF、$\LaTeX$、markdown、docx(Word)格式，本项目不收录任何学校老师的课件。
+提交的内容推荐为 PDF、 $\LaTeX$ 、markdown、docx(Word)格式，本项目不收录任何学校老师的课件。
 
 有志参与的同学请阅读我们的[贡献方式](#contribute)
 
