@@ -30,8 +30,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      #- name: Update dir
-      #  run: chmod +x ./update.py
+      - name: Update dir
+        run: python ./update.py
 
       - name: Deploy docs
         uses: mhausenblas/mkdocs-deploy-gh-pages@master
