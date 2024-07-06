@@ -33,6 +33,9 @@ jobs:
       - name: Update dir
         run: python ./update.py
 
+      - name: Create CNAME file
+        run: echo 'helper.bjutswift.cn' > ./docs/CNAME
+
       - name: Deploy docs
         uses: mhausenblas/mkdocs-deploy-gh-pages@master
         env:
