@@ -61,8 +61,7 @@ Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！
 ### c. 下载全部文件
 
 <div align="center">
-    <!--<img src="https://s2.loli.net/2023/06/22/nmkwgs1CZiAjMhe.jpg" alt="front" width="500" height="500"> !-->
-    <img src="https://github.com/bjut-swift/BJUT-Helper/blob/master/images/how2download.jpg?raw=true" alt="instruct" width="500" height="500"> 
+    <img src="https://jsd.cdn.zzko.cn/gh/Nagi-ovo/picx-images-hosting@master/docs/bjut-helper/how2download.41y032kg6z.jpg" alt="instruct" width="500" height="500"> 
 </div >
 
 1.点击蓝色的 Code 部分；
