@@ -1,7 +1,7 @@
 # BJUT-Helper
 
 <div align="center">
-    <img src="https://raw.githubusercontent.com/bjut-swift/BJUT-Helper/f82d7c6531a5a9d9af02b89b94d53a033fd27faa/images/title.png" alt="front" width="500" height="400">
+    <img src="https://cdn.bjutswift.cn/https://raw.githubusercontent.com/bjut-swift/BJUT-Helper/refs/heads/master/images/title.png" alt="front" width="500" height="400">
 </div>
 
 ## Preface | 引言
