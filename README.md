@@ -4,6 +4,12 @@
     <img src="https://cdn.bjutswift.cn/https://raw.githubusercontent.com/bjut-swift/BJUT-Helper/master/images/title.png" alt="front" width="350" height="350">
 </div>
 
+推荐使用[本项目网页端](https://helper.bjutswift.cn/)进行文件检索与下载。
+
+若要下载单个文件夹，将该文件夹网址复制到 [DownGit](https://minhaskamal.github.io/DownGit/#/home) 点击 download 即可下载。
+
+感谢对本项目贡献的同学：[Jesse Zhang](https://github.com/Nagi-ovo)、[DayShift](https://github.com/ShiyuBanzhou)、[Lands54](https://github.com/Lands54)、[yahuian](yahuian)、[RedStoneGuo](https://github.com/RedStoneGuo)、[Tingkai Liu](https://github.com/ak12s2021)、[Bohao Jing](https://github.com/JingBh)、[Yuxuan Lu](https://github.com/leoleoasd)、[Yanxi Lin](https://github.com/CallMeL)、[LC_State](https://github.com/LCS-Official)、[HLXY](https://github.com/HLXY-420)... 还有屏幕前的你。
+
 ## Preface | 引言
 
 （引自 [浙江大学课程攻略共享计划](https://github.com/QSCTech/zju-icicles) ）
@@ -35,7 +41,7 @@ Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！
 欢迎大家成为本仓库的贡献者！
 来自大家的关注、维护和贡献，才是让这个项目继续存在的动力~
 
-**有志于加入组织或是贡献资料的同学可以通过`bjutswift.cn@gmail.com`或者是在工大喵上发帖联系我们**
+**有志于加入组织或是贡献资料的同学可以通过`bjutswift.cn@gmail.com`发帖联系我们**
 
 如果有对于课程的评价可写在对应课程文件夹的 README.md 中。
 
@@ -47,12 +53,9 @@ Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！
 
     提示：GitHub仓库界面按下快捷键`t`，就能进入文件搜索模式，输入你想要寻找的文件名或者文件夹名，即可实时展示搜索结果
 
-### 阿里云盘
-已失效，请前往[工大喵](https://xiaoyuancat.com/)主页查看新地址。
+### a. 下载部分文件（推荐）
 
-### a. 下载部分文件
-
-使用[本项目网页端](https://open-bjut.github.io/BJUT-AI/)，找到并点击相应文件即可下载
+使用[本项目网页端](https://helper.bjutswift.cn/)，找到并点击相应文件即可下载
 
 ### b. 下载单个文件夹
 
@@ -74,11 +77,11 @@ Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！
 
 ## Guidelines | 贡献方式
 
-## GitHub（PC 端，需要学习）
+### GitHub（PC 端，需要学习）
 
-### a. 可观看 b 站视频[3 分钟成为 GitHub 开源项目贡献者](https://www.bilibili.com/video/BV1Fs4y1C7kS/?vd_source=0d0027b2a15be6333ab384009d32163d)，视频中（自认为）很清楚地展示了贡献开源项目的全流程。
+#### a. 可观看 b 站视频[3 分钟成为 GitHub 开源项目贡献者](https://www.bilibili.com/video/BV1Fs4y1C7kS/?vd_source=0d0027b2a15be6333ab384009d32163d)，视频中（自认为）很清楚地展示了贡献开源项目的全流程。
 
-### b. 或阅读如下步骤
+#### b. 或阅读如下步骤
 
 由于本项目体积（未来也许会）很大，故推荐采用在 GitHub Web 端直接上传 的方式。
 具体操作如下：
