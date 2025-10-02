@@ -8,7 +8,13 @@
 
 若要下载单个文件夹，将该文件夹网址复制到 [DownGit](https://minhaskamal.github.io/DownGit/#/home) 点击 download 即可下载。
 
-感谢对本项目贡献的同学：[Jesse Zhang](https://github.com/Nagi-ovo)、[DayShift](https://github.com/ShiyuBanzhou)、[Lands54](https://github.com/Lands54)、[yahuian](yahuian)、[RedStoneGuo](https://github.com/RedStoneGuo)、[Tingkai Liu](https://github.com/ak12s2021)、[Bohao Jing](https://github.com/JingBh)、[Yuxuan Lu](https://github.com/leoleoasd)、[Yanxi Lin](https://github.com/CallMeL)、[LC_State](https://github.com/LCS-Official)、[HLXY](https://github.com/HLXY-420)... 还有屏幕前的你。
+感谢对本项目贡献的同学：
+
+<a href="https://github.com/bjut-swift/BJUT-Helper/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=bjut-swift/BJUT-Helper" />
+</a>
+
+... 还有屏幕前的你。
 
 ## Preface | 引言
 
