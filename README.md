@@ -4,6 +4,9 @@
     <img src="https://cdn.bjutswift.cn/https://raw.githubusercontent.com/bjut-swift/BJUT-Helper/master/images/title.png" alt="front" width="350" height="350">
 </div>
 
+> 💡 **欢迎加入 BJUT-Swift 组织！**  
+> 如果你有兴趣参与项目维护、贡献资料或加入我们的团队，欢迎通过邮箱 `bjut.swift@gmail.com` 联系我们。
+
 推荐使用[本项目网页端](https://helper.bjutswift.cn/)进行文件检索与下载。
 
 若要下载单个文件夹，将该文件夹网址复制到 [DownGit](https://minhaskamal.github.io/DownGit/#/home) 点击 download 即可下载。
@@ -51,13 +54,12 @@ Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！
 
 如果有对于课程的评价可写在对应课程文件夹的 README.md 中。
 
-提交的内容推荐为 PDF、 \$\\LaTeX\$ 、Markdown、docx（除非是试卷本身格式，否则建议用 Markdown 代替 Word）格式，本项目不收录任何学校老师的课件。
+提交的内容推荐为 PDF、 $\LaTeX$ 、Markdown、docx（除非是试卷本身格式，否则建议用 Markdown 代替 Word）格式，本项目不收录任何学校老师的课件。
 
 有志参与的同学请阅读我们的[贡献方式](#contribute)
 
 ## Download | 下载方式
-
-    提示：GitHub仓库界面按下快捷键`t`，就能进入文件搜索模式，输入你想要寻找的文件名或者文件夹名，即可实时展示搜索结果
+> 提示：GitHub 仓库界面按下快捷键`t`，就能进入文件搜索模式，输入你想要寻找的文件名或者文件夹名，即可实时展示搜索结果
 
 ### a. 下载部分文件（推荐）
 
@@ -79,6 +81,49 @@ Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！
 
 3\*.（可选）若想随时同步本项目，可使用 git clone 本仓库。Git 教程可参考[Git 教程 - 廖雪峰的官方网站](https://www.liaoxuefeng.com/wiki/896043488029600)
 
+## Local Deployment | 本地部署
+
+如果你想贡献本项目并且不止添加了二进制文件，那么在本地部署并预览本项目网站是必须的！
+
+你可以按照以下步骤操作：
+
+### 1. 克隆项目
+
+```bash
+git clone https://github.com/bjut-swift/BJUT-Helper.git && cd BJUT-Helper
+```
+
+### 2. 安装依赖
+
+本项目使用 MkDocs 构建文档网站，最方便的就是用 `uv` 来安装依赖：
+
+```bash
+# 安装 uv（如果还没安装）
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# 安装依赖
+uv sync
+```
+
+当然，你也可以用 `conda` 和 `pip` 来完成。
+
+### 3. 测试部署
+
+如果你运行更新脚本生成各课程的文档页面：
+
+```bash
+python update.py
+```
+
+此脚本会扫描所有课程文件夹，自动生成对应的 Markdown 文档到 `docs/` 目录。
+
+### 4. 启动本地服务器
+
+```bash
+# 使用 uv
+uv run mkdocs serve
+
+```
 <a id="contribute"></a>
 
 ## Guidelines | 贡献方式
@@ -108,7 +153,7 @@ Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！
 
 欢迎贡献个人学习心得、复习笔记等内容，**请使用者自行分辨这些内容的时效性和是否完整/正确**。
 
-再次重申，提交的内容推荐为 PDF、\$\\LaTeX\$ 、Markdown、docx(Word) 格式，本项目不收录任何学校老师的课件。
+再次重申，提交的内容推荐为 PDF、$\LaTeX$ 、Markdown、docx(Word) 格式，本项目不收录任何学校老师的课件。
 
 ## License | 许可
 

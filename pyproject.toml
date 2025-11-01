@@ -1,0 +1,11 @@
+[project]
+name = "bjut-helper"
+version = "0.1.0"
+requires-python = ">=3.10,<3.11"
+dependencies = [
+    "jinja2==3.0.0",
+    "mkdocs-git-revision-date-localized-plugin==0.9.3",
+    "mkdocs-material==7.3.6",
+    "mkdocs-minify-plugin==0.4.0",
+    "mkdocs-static-i18n==0.46",
+]
