@@ -151,7 +151,7 @@ uv run mkdocs serve
 
 欢迎贡献个人学习心得、复习笔记等内容，**请使用者自行分辨这些内容的时效性和是否完整/正确**。
 
-再次重申，提交的内容推荐为 PDF、$\LaTeX$ 、Markdown、docx(Word) 格式，本项目不收录任何学校老师的课件。
+再次重申，提交的内容推荐为 PDF、 $\LaTeX$ 、Markdown、docx(Word) 格式，本项目不收录任何学校老师的课件。
 
 ## License | 许可
 
