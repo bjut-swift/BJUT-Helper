@@ -4,7 +4,7 @@
     <img src="https://cdn.bjutswift.cn/https://raw.githubusercontent.com/bjut-swift/BJUT-Helper/master/images/title.png" alt="front" width="350" height="350">
 </div>
 
-> 💡 **欢迎加入 BJUT-Swift 组织！**  
+> 💡 **欢迎加入 BJUT-SWIFT 组织！**  
 > 如果你有兴趣参与项目维护、贡献资料或加入我们的团队，欢迎通过邮箱 `bjut.swift@gmail.com` 联系我们。
 
 推荐使用[本项目网页端](https://helper.bjutswift.cn/)进行文件检索与下载。
