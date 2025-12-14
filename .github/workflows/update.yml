@@ -31,11 +31,14 @@ jobs:
           pip install .
       
       - name: Clean build files
-        run: rm -rf ./Build *.egg-info
+        run: | 
+          rm -rf ./Build ./build ./dist *.egg-info __pycache__
+          find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
+          find . -type d -name "*.egg-info" -exec rm -rf {} + 2>/dev/null || true
 
       - name: Update dir
         run: python ./update.py
-
+        
       - name: Create CNAME file
         run: echo 'helper.bjutswift.cn' > ./docs/CNAME
 
