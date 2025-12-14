@@ -34,7 +34,9 @@ jobs:
         run: python ./update.py
       
       - name: Clean build files
-        run: rm -rf ./Build *.egg-info
+        run: |
+          rm -rf ./Build *.egg-info
+          ls ./docs/
 
       - name: Create CNAME file
         run: echo 'helper.bjutswift.cn' > ./docs/CNAME
