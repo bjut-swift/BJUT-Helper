@@ -1,8 +1,23 @@
 # BJUT-Helper
 
 <div align="center">
-    <img src="https://thatwebsite.oss-cn-hongkong.aliyuncs.com/title.png" alt = "front" width="500" height="400">
+    <img src="https://cdn.bjutswift.cn/https://raw.githubusercontent.com/bjut-swift/BJUT-Helper/master/images/title.png" alt="front" width="350" height="350">
 </div>
+
+> 💡 **欢迎加入 BJUT-SWIFT 组织！**  
+> 如果你有兴趣参与项目维护、贡献资料或加入我们的团队，欢迎通过邮箱 `bjutswift.cn@gmail.com` 联系我们。
+
+推荐使用[本项目网页端](https://helper.bjutswift.cn/)进行文件检索与下载。
+
+若要下载单个文件夹，将该文件夹网址复制到 [DownGit](https://minhaskamal.github.io/DownGit/#/home) 点击 download 即可下载。
+
+感谢对本项目贡献的同学：
+
+<a href="https://github.com/bjut-swift/BJUT-Helper/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=bjut-swift/BJUT-Helper" />
+</a>
+
+... 还有屏幕前的你。
 
 ## Preface | 引言
 
@@ -35,22 +50,20 @@ Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！
 欢迎大家成为本仓库的贡献者！
 来自大家的关注、维护和贡献，才是让这个项目继续存在的动力~
 
+**有志于加入组织或是贡献资料的同学可以通过`bjutswift.cn@gmail.com`发帖联系我们**
+
 如果有对于课程的评价可写在对应课程文件夹的 README.md 中。
 
-提交的内容推荐为 PDF、 $\LaTeX$ 、markdown、docx(Word)格式，本项目不收录任何学校老师的课件。
+提交的内容推荐为 PDF、 $\LaTeX$ 、Markdown、docx（除非是试卷本身格式，否则建议用 Markdown 代替 Word）格式，本项目不收录任何学校老师的课件。
 
 有志参与的同学请阅读我们的[贡献方式](#contribute)
 
 ## Download | 下载方式
+> 提示：GitHub 仓库界面按下快捷键`t`，就能进入文件搜索模式，输入你想要寻找的文件名或者文件夹名，即可实时展示搜索结果
 
-    提示：GitHub仓库界面按下快捷键`t`，就能进入文件搜索模式，输入你想要寻找的文件名或者文件夹名，即可实时展示搜索结果
+### a. 下载部分文件（推荐）
 
-### 阿里云盘
-已失效，请前往[工大喵](https://xiaoyuancat.com/)主页查看新地址。
-
-### a. 下载部分文件
-
-使用[本项目网页端](https://open-bjut.github.io/BJUT-AI/)，找到并点击相应文件即可下载
+使用[本项目网页端](https://helper.bjutswift.cn/)，找到并点击相应文件即可下载
 
 ### b. 下载单个文件夹
 
@@ -59,30 +72,70 @@ Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！
 ### c. 下载全部文件
 
 <div align="center">
-    <!--<img src="https://s2.loli.net/2023/06/22/nmkwgs1CZiAjMhe.jpg" alt="front" width="500" height="500"> !-->
-    <img src="https://thatwebsite.oss-cn-hongkong.aliyuncs.com/%E4%B8%8B%E8%BD%BD%E9%A1%B9%E7%9B%AE%E6%8C%87%E5%8D%97.jpg" alt="instruct" width="500" height="500"> 
+    <img src="https://cdn.bjutswift.cn/https://raw.githubusercontent.com/bjut-swift/BJUT-Helper/master/images/how2download.jpg" alt="instruct" width="500" height="500"> 
 </div >
 
 1.点击蓝色的 Code 部分；
 
 2.点击 Download ZIP 即可下载到本地
 
-3\*.（可选）若想随时同步本项目，可使用 git clone 本仓库。Git 教程可参考[Git 教程- 廖雪峰的官方网站](https://www.liaoxuefeng.com/wiki/896043488029600)
+3\*.（可选）若想随时同步本项目，可使用 git clone 本仓库。Git 教程可参考[Git 教程 - 廖雪峰的官方网站](https://www.liaoxuefeng.com/wiki/896043488029600)
 
+## Local Deployment | 本地部署
+
+你可以按照以下步骤操作：
+
+### 1. 克隆项目
+
+```bash
+git clone https://github.com/bjut-swift/BJUT-Helper.git && cd BJUT-Helper
+```
+
+### 2. 安装依赖
+
+本项目使用 MkDocs 构建文档网站，最方便的就是用 `uv` 来安装依赖：
+
+```bash
+# 安装 uv（如果还没安装）
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# 安装依赖
+uv sync
+```
+
+当然，你也可以用 `conda` 和 `pip` 来完成。
+
+### 3. 测试部署
+
+运行更新脚本生成各课程的文档页面：
+
+```bash
+uv run update.py
+```
+
+此脚本会扫描所有课程文件夹，自动生成对应的 Markdown 文档到 `docs/` 目录。
+
+### 4. 启动本地服务器
+
+```bash
+# 使用 uv
+uv run mkdocs serve
+
+```
 <a id="contribute"></a>
 
 ## Guidelines | 贡献方式
 
-## GitHub（PC 端，需要学习）
+### GitHub（PC 端，需要学习）
 
-### a. 可观看 b 站视频[3 分钟成为 GitHub 开源项目贡献者](https://www.bilibili.com/video/BV1Fs4y1C7kS/?vd_source=0d0027b2a15be6333ab384009d32163d)，视频中（自认为）很清楚地展示了贡献开源项目的全流程。
+#### a. 可观看 b 站视频[3 分钟成为 GitHub 开源项目贡献者](https://www.bilibili.com/video/BV1Fs4y1C7kS/?vd_source=0d0027b2a15be6333ab384009d32163d)，视频中（自认为）很清楚地展示了贡献开源项目的全流程。
 
-### b. 或阅读如下步骤
+#### b. 或阅读如下步骤
 
 由于本项目体积（未来也许会）很大，故推荐采用在 GitHub Web 端直接上传 的方式。
 具体操作如下：
 
-- 首先 Fork 本项目（若是以前fork的，提交前记得检查你的fork是否与主仓库同步。）
+- 首先 Fork 本项目（若是以前 fork 的，提交前记得检查你的 fork 是否与主仓库同步。）
 
 - 上传文件到已有文件夹：打开对应文件夹，点击绿色 Download 按钮旁的 upload，上传你的文件。
 
@@ -93,13 +146,12 @@ Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！
 - Fork 本项目
 - 然后在 GitHub 网页端点击 Upload File 上传文件，发起 PR 即可。建议先看清楚项目的文件组织再上传哦~
 - 或者也可以直接附加在 Issue 中，由维护者进行添加。
-- 添加微信 Nag12333，由维护者进行/帮助添加。
 
 ## Reminder | 提醒
 
 欢迎贡献个人学习心得、复习笔记等内容，**请使用者自行分辨这些内容的时效性和是否完整/正确**。
 
-再次重申，提交的内容推荐为 PDF、 $\LaTeX$ 、markdown、docx(Word)格式，本项目不收录任何学校老师的课件。
+再次重申，提交的内容推荐为 PDF、 $\LaTeX$ 、Markdown、docx(Word) 格式，本项目不收录任何学校老师的课件。
 
 ## License | 许可
 
@@ -109,7 +161,7 @@ Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！
 
 只是想尝试为后来的同学节省一些时间。
 
-由于资料来源复杂，如果收录的资料侵犯了您的著作权，请发起 issue 或发邮件至openbjut@163.com ，我们将立即停止使用您的资料。
+由于资料来源复杂，如果收录的资料侵犯了您的著作权，请发起 issue 或发邮件至 `bjutswift.cn@gmail.com` ，我们将立即停止使用您的资料。
 
 ## Star History
 

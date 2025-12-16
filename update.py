@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
 import os
+import shutil
 from urllib.parse import quote
 
-EXCLUDE_DIRS = ['.git', 'docs', '.vscode', '.circleci', 'site','.github','src','overrides','images']
+EXCLUDE_DIRS = ['.git', 'docs', '.vscode', '.circleci', '.venv', 'site','.github','src','overrides','images','Build','build','dist','__pycache__']
 README_MD = ['README.md', 'readme.md', 'index.md']
 
 TXT_EXTS = ['md', 'txt']
@@ -52,9 +53,9 @@ def generate_md(course: str, filelist_texts: str, readme_path: str):
 
 
 if __name__ == '__main__':
-    if not os.path.isdir('docs'):
-        os.mkdir('docs')
-
+    if os.path.exists('docs'):
+        shutil.rmtree('docs')
+    os.mkdir('docs')
     courses = list(filter(lambda x: os.path.isdir(x) and (
         x not in EXCLUDE_DIRS), os.listdir('.')))  # list courses
 
