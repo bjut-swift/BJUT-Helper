@@ -49,35 +49,54 @@
 
 我希望只要是前人走过的弯路，后人就不必再走。这是我的信念，也是我建立这个项目的原因。
 
-## Contribution | 贡献
+## Contribution | 如何贡献一份资料
 
-欢迎贡献！
+> **你不需要会写代码，不需要本地部署，只需要一个 GitHub 账号。**
+> 提交 PR 后，CI 会自动构建和部署，你什么都不用管。
 
-欢迎贡献！
+### 三步贡献
 
-欢迎贡献！
+**第 1 步：Fork 本项目**
 
-——因为很重要所以说了三遍
+点击页面右上角的 **Fork** 按钮，将项目复制到你自己的 GitHub 账号下。
 
-Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！
+**第 2 步：上传文件**
 
-欢迎大家成为本仓库的贡献者！
-来自大家的关注、维护和贡献，才是让这个项目继续存在的动力~
+在你 Fork 的仓库中，找到对应的课程文件夹（如 `高等数学(工)/`），点击 **Add file → Upload files**，把你的资料拖进去。
 
-**有志于加入组织或是贡献资料的同学可以通过`bjutswift.cn@gmail.com`发帖联系我们**
+- 如果需要**新建课程文件夹**：点击 **Add file → Create new file**，在文件名处输入 `课程名/.gitkeep`，提交后就能在新文件夹里上传文件了。
+- 文件格式推荐：PDF、Markdown、$\LaTeX$、docx（建议用 Markdown 代替 Word）
+- **不收录**老师的课件原件
 
-如果有对于课程的评价可写在对应课程文件夹的 README.md 中。
+**第 3 步：提交 PR**
 
-提交的内容推荐为 PDF、 $\LaTeX$ 、Markdown、docx（除非是试卷本身格式，否则建议用 Markdown 代替 Word）格式，本项目不收录任何学校老师的课件。
+回到[本项目主页](https://github.com/bjut-swift/BJUT-Helper)，点击 **Pull requests → New pull request**，选择你的 Fork 分支，提交即可。
 
-有志参与的同学请阅读我们的[贡献方式](#contribute)
+合并后网站会**自动更新**，无需任何手动操作。🎉
+
+> **更简单的方式**：不想学 Fork/PR？直接在 [Issues](https://github.com/bjut-swift/BJUT-Helper/issues) 里上传文件附件，说明是哪门课的资料，维护者会帮你添加。
+
+<details>
+<summary>📺 视频教程</summary>
+
+B 站视频：[3 分钟成为 GitHub 开源项目贡献者](https://www.bilibili.com/video/BV1Fs4y1C7kS/?vd_source=0d0027b2a15be6333ab384009d32163d)
+
+</details>
+
+### 贡献内容说明
+
+- 欢迎：笔记、复习资料、历年试卷、选课攻略、课程评价
+- 课程评价可以写在对应课程文件夹的 `README.md` 中
+- 命名建议：`届-专业-姓名.md`（如 `24-信管-张三.md`）
+- 有任何问题欢迎通过 `bjutswift.cn@gmail.com` 联系我们
 
 ## Download | 下载方式
-> 提示：GitHub 仓库界面按下快捷键`t`，就能进入文件搜索模式，输入你想要寻找的文件名或者文件夹名，即可实时展示搜索结果
 
-### a. 下载部分文件（推荐）
+> 提示：GitHub 仓库界面按下快捷键 `t`，就能进入文件搜索模式，输入你想要寻找的文件名或者文件夹名，即可实时展示搜索结果
 
-使用[本项目网页端](https://helper.bjutswift.cn/)，找到并点击相应文件即可下载
+### a. 在线浏览（推荐）
+
+使用[本项目网页端](https://helper.bjutswift.cn/)，找到并点击相应文件即可下载。
 
 ### b. 下载单个文件夹
 
@@ -86,79 +105,36 @@ Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！
 ### c. 下载全部文件
 
 <div align="center">
-    <img src="https://cdn.bjutswift.cn/https://raw.githubusercontent.com/bjut-swift/BJUT-Helper/master/images/how2download.jpg" alt="instruct" width="500" height="500"> 
-</div >
+    <img src="https://cdn.bjutswift.cn/https://raw.githubusercontent.com/bjut-swift/BJUT-Helper/master/images/how2download.jpg" alt="instruct" width="500" height="500">
+</div>
 
-1.点击蓝色的 Code 部分；
+1. 点击蓝色的 Code 部分
+2. 点击 Download ZIP 即可下载到本地
+3. （可选）`git clone` 本仓库以随时同步更新
 
-2.点击 Download ZIP 即可下载到本地
+<details>
+<summary>🔧 开发者：本地部署指南</summary>
 
-3\*.（可选）若想随时同步本项目，可使用 git clone 本仓库。Git 教程可参考[Git 教程 - 廖雪峰的官方网站](https://www.liaoxuefeng.com/wiki/896043488029600)
-
-## Local Deployment | 本地部署
-
-你可以按照以下步骤操作：
-
-### 1. 克隆项目
+本地部署仅供项目维护者或想要预览修改效果的同学参考，**普通贡献者不需要这一步**。
 
 ```bash
+# 1. 克隆项目
 git clone https://github.com/bjut-swift/BJUT-Helper.git && cd BJUT-Helper
-```
 
-### 2. 安装依赖
-
-本项目使用 MkDocs 构建文档网站，最方便的就是用 `uv` 来安装依赖：
-
-```bash
-# 安装 uv（如果还没安装）
+# 2. 安装依赖（需要 uv，也可用 conda/pip）
 curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# 安装依赖
 uv sync
-```
 
-当然，你也可以用 `conda` 和 `pip` 来完成。
-
-### 3. 测试部署
-
-运行更新脚本生成各课程的文档页面：
-
-```bash
+# 3. 生成文档页面
 uv run update.py
-```
 
-此脚本会扫描所有课程文件夹，自动生成对应的 Markdown 文档到 `docs/` 目录。
-
-### 4. 启动本地服务器
-
-```bash
-# 使用 uv
+# 4. 启动本地预览
 uv run mkdocs serve
 ```
-<a id="contribute"></a>
 
-## Guidelines | 贡献方式
+`update.py` 会扫描所有课程文件夹，自动生成对应的 Markdown 文档到 `docs/` 目录。
 
-### GitHub（PC 端，需要学习）
-
-#### a. 可观看 b 站视频[3 分钟成为 GitHub 开源项目贡献者](https://www.bilibili.com/video/BV1Fs4y1C7kS/?vd_source=0d0027b2a15be6333ab384009d32163d)，视频中（自认为）很清楚地展示了贡献开源项目的全流程。
-
-#### b. 或阅读如下步骤
-
-由于本项目体积（未来也许会）很大，故推荐采用在 GitHub Web 端直接上传 的方式。
-具体操作如下：
-
-- 首先 Fork 本项目（若是以前 fork 的，提交前记得检查你的 fork 是否与主仓库同步。）
-
-- 上传文件到已有文件夹：打开对应文件夹，点击绿色 Download 按钮旁的 upload，上传你的文件。
-
-- 上传文件到新文件夹：打开任意文件夹，点击绿色 Download 按钮旁的 upload，把浏览器地址栏中文件夹名称改为你想要新建的文件夹名称，然后回车，上传你的文件。
-
-提交 PR：
-
-- Fork 本项目
-- 然后在 GitHub 网页端点击 Upload File 上传文件，发起 PR 即可。建议先看清楚项目的文件组织再上传哦~
-- 或者也可以直接附加在 Issue 中，由维护者进行添加。
+</details>
 
 ## Reminder | 提醒
 
