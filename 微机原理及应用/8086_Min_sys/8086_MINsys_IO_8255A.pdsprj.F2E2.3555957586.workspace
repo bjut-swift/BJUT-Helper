@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<WORKSPACE>
+ <FRAME activewindow="0">
+  <PLACEMENT>2c00000002000000010000000083ffff0083ffffffffffffffffffff78000000200000002b090000e0040000</PLACEMENT>
+  <WINDOW type="default" module="ISIS"/>
+ </FRAME>
+ <MODULE name="VSMDEBUG">
+  <PWI>
+   <POPUP w="800" x="245" flags="00000002" y="327" h="200" pid="0" iid="-1">
+    <PROPERTIES/>
+   </POPUP>
+   <POPUP w="350" x="265" flags="00000032" y="347" h="200" pid="1" iid="-1">
+    <PROPERTIES/>
+   </POPUP>
+   <POPUP w="40" x="285" flags="00000008" y="367" h="13" pid="2" iid="3">
+    <PROPERTIES/>
+   </POPUP>
+   <POPUP w="600" x="305" flags="0000002b" y="387" h="400" pid="3" iid="3">
+    <PROPERTIES>
+     <ITEM name="CaseSensitive">No</ITEM>
+     <ITEM name="DISPADDRS">Yes</ITEM>
+     <ITEM name="DISPLNUMS">No</ITEM>
+     <ITEM name="DISPOPCODES">No</ITEM>
+     <ITEM name="FIXUPBPTS">Yes</ITEM>
+     <ITEM name="WordsOnly">No</ITEM>
+     <ITEM name="nBreakpoints">0</ITEM>
+    </PROPERTIES>
+   </POPUP>
+   <POPUP w="300" x="325" flags="0000000b" y="407" h="300" pid="4" iid="3">
+    <PROPERTIES/>
+   </POPUP>
+   <POPUP w="16" x="345" flags="0000000a" y="427" h="25" pid="1" iid="3">
+    <PROPERTIES/>
+   </POPUP>
+   <POPUP w="55" x="365" flags="00000008" y="447" h="22" pid="1" iid="4">
+    <PROPERTIES/>
+   </POPUP>
+  </PWI>
+ </MODULE>
+</WORKSPACE>
