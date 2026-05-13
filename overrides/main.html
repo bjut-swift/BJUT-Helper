@@ -1,5 +1,17 @@
 {% extends "base.html" %}
 
+{% block styles %}
+{{ super() }}
+<style>
+  .md-author img {
+    filter: none !important;
+  }
+  .md-author:hover img {
+    transform: scale(1.15);
+  }
+</style>
+{% endblock %}
+
 {% block scripts %}
 {{ super() }}
 <script>
