@@ -36,7 +36,7 @@ jobs:
       - name: Build site
         run: mkdocs build --strict
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          MKDOCS_GIT_COMMITTERS_APIKEY: ${{ github.token }}
 
       - name: Deploy docs
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
