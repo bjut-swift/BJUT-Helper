@@ -53,5 +53,12 @@ markdown_extensions:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
 
+plugins:
+  - search
+  - git-committers:
+      repository: bjut-swift/BJUT-Helper
+      branch: master
+      token: !ENV ["GITHUB_TOKEN", ""]
+
 copyright: |
   &copy; 2024 <a href="https://github.com/bjut-swift"  target="_blank" rel="noopener">BJUT-SWIFT</a>
