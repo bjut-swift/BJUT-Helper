@@ -7,7 +7,7 @@ from urllib.parse import quote
 
 from pypinyin import lazy_pinyin, Style
 
-EXCLUDE_DIRS = ['.git', 'docs', '.vscode', '.circleci', '.venv', 'site','.github','src','overrides','images','Build','build','dist','__pycache__']
+EXCLUDE_DIRS = ['.git', 'docs', '.vscode', '.circleci', '.venv', 'site','.github','src','overrides','images','Build','build','dist','__pycache__','.cache','hooks']
 README_MD = ['README.md', 'readme.md', 'index.md']
 
 def to_slug(name: str) -> str:
