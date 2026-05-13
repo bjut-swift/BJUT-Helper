@@ -40,7 +40,8 @@ jobs:
 
       - name: Deploy docs
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-        uses: mhausenblas/mkdocs-deploy-gh-pages@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          CUSTOM_DOMAIN: helper.bjutswift.cn
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GH_TOKEN }}
+          publish_dir: ./site
+          cname: helper.bjutswift.cn
