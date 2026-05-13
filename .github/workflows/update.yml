@@ -42,6 +42,6 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GH_TOKEN }}
+          github_token: ${{ github.token }}
           publish_dir: ./site
           cname: helper.bjutswift.cn
