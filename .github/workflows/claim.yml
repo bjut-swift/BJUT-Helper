@@ -8,6 +8,7 @@ jobs:
   assign:
     if: >-
       !github.event.issue.pull_request &&
+      github.event.comment.user.login != github.event.issue.user.login &&
       (contains(github.event.comment.body, '/claim') || contains(github.event.comment.body, '认领'))
     runs-on: ubuntu-latest
     permissions:
