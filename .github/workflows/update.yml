@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -33,13 +35,13 @@ jobs:
 
       - name: Build site
         run: mkdocs build --strict
-
-      - name: Create CNAME file
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-        run: echo 'helper.bjutswift.cn' > ./site/CNAME
+        env:
+          MKDOCS_GIT_COMMITTERS_APIKEY: ${{ github.token }}
 
       - name: Deploy docs
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-        uses: mhausenblas/mkdocs-deploy-gh-pages@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ github.token }}
+          publish_dir: ./site
+          cname: helper.bjutswift.cn
