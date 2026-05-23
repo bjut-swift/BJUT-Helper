@@ -4,4 +4,4 @@
 [![经验分享视频](https://img.shields.io/badge/Bilibili-视频链接-fb7299?logo=bilibili)](https://www.bilibili.com/video/BV1nT5izsEGu/)
 
 2025-05-22 海硕如何修炼成phd
-[![经验分享视频](https://img.shields.io/badge/Bilibili-视频链接-fb7299?logo=bilibili)]([https://www.bilibili.com/video/BV1nT5izsEGu/](https://www.bilibili.com/video/BV13bGY61EEC/?spm_id_from=333.1387.upload.video_card.click&vd_source=79c5c849fe0e5373197a88a93f3c19a1))
+[![经验分享视频](https://img.shields.io/badge/Bilibili-视频链接-fb7299?logo=bilibili)](https://www.bilibili.com/video/BV13bGY61EEC/?share_source=copy_web&vd_source=1bb8535f3fd29b51ced75f651ade4d2e)
