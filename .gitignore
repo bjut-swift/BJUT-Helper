@@ -1,2 +1,8 @@
 .DS_Store
 /docs
+/.cache
+*.exe
+*.EXE
+*.workspace
+__pycache__/
+*.egg-info/
