@@ -1,11 +1,22 @@
 # -*- coding: utf-8 -*-
 
 import os
+import re
 import shutil
 from urllib.parse import quote
 
-EXCLUDE_DIRS = ['.git', 'docs', '.vscode', '.circleci', '.venv', 'site','.github','src','overrides','images','Build','build','dist','__pycache__']
+from pypinyin import lazy_pinyin, Style
+
+EXCLUDE_DIRS = ['.git', 'docs', '.vscode', '.circleci', '.venv', 'site','.github','src','overrides','images','Build','build','dist','__pycache__','.cache','hooks']
 README_MD = ['README.md', 'readme.md', 'index.md']
+
+def to_slug(name: str) -> str:
+    parts = lazy_pinyin(name, style=Style.NORMAL)
+    slug = '-'.join(parts)
+    slug = re.sub(r'[^a-zA-Z0-9\-]', '', slug)
+    slug = re.sub(r'-+', '-', slug).strip('-').lower()
+    return slug or name
+
 
 TXT_EXTS = ['md', 'txt']
 TXT_URL_PREFIX = 'https://github.com/bjut-swift/BJUT-Helper/blob/master/'
@@ -44,12 +55,14 @@ def list_files(course: str):
 
 
 def generate_md(course: str, filelist_texts: str, readme_path: str):
-    final_texts = ['\n\n', filelist_texts]
+    slug = to_slug(course)
+    front_matter = ['---\n', 'title: "{}"\n'.format(course), '---\n', '\n']
+    final_texts = ['# {}\n'.format(course), '\n', filelist_texts]
     if readme_path:
         with open(readme_path, 'r', encoding='utf-8') as file:
-            final_texts = file.readlines() + final_texts
-    with open('docs/{}.md'.format(course), 'w', encoding='utf-8') as file:
-        file.writelines(final_texts)
+            final_texts = file.readlines() + ['\n', filelist_texts]
+    with open('docs/{}.md'.format(slug), 'w', encoding='utf-8') as file:
+        file.writelines(front_matter + final_texts)
 
 
 if __name__ == '__main__':
